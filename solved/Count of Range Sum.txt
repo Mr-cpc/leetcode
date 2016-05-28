@@ -1,0 +1,71 @@
+public class Solution {
+    int count;
+    public long[] getSum(int[] a)
+    {
+        long[] sum = new long[a.length+1];
+        for(int i = 1;i<sum.length;i++)
+        {
+            sum[i] = sum[i-1] + a[i-1];
+        }
+        return sum;
+    }
+    public void merge(long[] a,int st1,int en1,int st2,int en2,int lower,int upper)
+    {
+        for(int i = st2;i<=en2;i++)
+        {
+            long cha = 0;
+            for(int j = st1;j<=en1;j++)
+            {
+                cha = a[i] - a[j];
+                if(cha <= upper && cha >= lower)
+                    count++;
+                else
+                {
+                    if(cha < lower)
+                        break;
+                }
+            }
+            if(cha > upper)
+                break;
+        }
+        long[] tmp = new long[en1-st1+en2-st2+2];
+        int i = st1,j = st2,k = 0;
+        while(i<=en1 && j <=en2)
+        {
+            if(a[i]<=a[j])
+                tmp[k++] = a[i++];
+            else
+                tmp[k++] = a[j++];
+        }
+        while(i<=en1)
+        {
+            tmp[k++] = a[i++];
+        }
+        while(j<=en2)
+        {
+            tmp[k++] = a[j++];
+        }
+        for(int m = 0;m<tmp.length;m++)
+            a[m+st1] = tmp[m];
+    }
+    public void mergeSort(long[] a,int low,int high,int lower,int upper)
+    {
+        if(low >= high)
+            return;
+        int mid = (low + high) >> 1;
+        mergeSort(a,low,mid,lower,upper);
+        mergeSort(a,mid+1,high,lower,upper);
+        merge(a,low,mid,mid+1,high,lower,upper);
+    }
+    public int countRangeSum(int[] nums, int lower, int upper) 
+    {
+        long[] sum = getSum(nums);
+        for(int i = 1;i<sum.length;i++)
+        {
+            if(sum[i]<=upper && sum[i] >= lower)
+                count++;
+        }
+        mergeSort(sum,1,sum.length-1,lower,upper);
+        return count;
+    }
+}

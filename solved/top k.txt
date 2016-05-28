@@ -1,0 +1,125 @@
+public class Solution {
+    List<Integer> l = new ArrayList<Integer>();
+    public List<Integer> topKFrequent(int[] nums, int k) 
+    {
+        if(nums.length ==0)
+            return l;
+        HashMap<Integer,Integer> hm = new HashMap<Integer,Integer>();
+       // ArrayList<Integer> l = new ArrayList<Integer>();
+        for(int i = 0;i<nums.length;i++)
+        {
+            if(hm.containsKey(nums[i]) )
+            {
+                hm.put(nums[i],hm.get(nums[i])+1 );
+            }
+            else
+                hm.put(nums[i],0);
+        }
+        Set<Integer> s = hm.keySet();
+        MinHeap mh = new MinHeap(k);
+        for(Integer num : s)
+        {
+            int freq = hm.get(num);
+            mh.add(new N(num,freq));
+        }
+        for(int i = 0;i<k;i++)
+            l.add(mh.remove() );
+        return l;
+    }
+}
+class N
+{
+    int num;
+    int freq;
+    N(int num,int freq)
+    {
+        this.num = num;
+        this.freq = freq;
+    }
+}
+class MinHeap
+{
+    final int MAX_SIZE;
+    int size;
+    N[] heap;
+    public MinHeap(int size)
+    {
+        this.MAX_SIZE = size;
+        heap = new N[MAX_SIZE+1];
+    }
+    public void add(N x)
+    {
+        if(size < MAX_SIZE)
+        {
+            heap[++size] = x;
+            upAdjust(size);
+            return ;
+        }
+        else
+        {
+            if(x.freq<=heap[1].freq)
+                return;
+            else
+            {
+                heap[1] = x;
+                downAdjust(1);
+            }
+        }
+    }
+    public int remove()
+    {
+        N d = heap[1];
+        heap[1] = heap[size--];
+        downAdjust(1);
+        return d.num;
+    }
+    public static void swap(N a[],int i,int j)
+    {
+        N tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    public void upAdjust(int idx)
+    {
+        if(idx == 1)
+            return;
+        int par = idx >> 1;
+        if(heap[idx].freq>=heap[par].freq)
+            return;
+        else
+        {
+            swap(heap,idx,par);
+            upAdjust(par);
+        }
+    }
+    public void downAdjust(int idx)
+    {
+        int par = idx << 1;
+        if(par>size)
+            return;
+        else
+        {
+            if(par+1>size)
+            {
+                if(heap[idx].freq<=heap[par].freq)
+                    return;
+                else
+                {
+                    swap(heap,idx,par);
+                    return;
+                }
+            }
+            else
+            {
+                int min = heap[par].freq<=heap[par+1].freq?par:par+1;
+                if(heap[idx].freq<=heap[min].freq)
+                    return;
+                else
+                {
+                    swap(heap,idx,min);
+                    downAdjust(min);
+                }
+            }
+        }
+    }
+}

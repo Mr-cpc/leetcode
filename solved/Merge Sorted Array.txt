@@ -1,0 +1,28 @@
+public class Solution {
+    int tmp;
+    public void insert(int[] a,int i)
+    {
+        if(a[i]>=a[i-1])
+            return;
+        for(int j = i;j>0;j--)
+        {
+            if(a[j]<a[j-1])
+            {
+                tmp = a[j];
+                a[j] = a[j-1];
+                a[j-1] = tmp;
+            }
+        }
+    }
+    public void merge(int[] nums1, int m, int[] nums2, int n) 
+    {
+        for(int i = 0;i<n;i++)
+            nums1[i+m] = nums2[i];
+        if(m == 0)
+            return;
+        for(int i = m;i<=m+n-1;i++)
+        {
+            insert(nums1,i);
+        }
+    }
+}

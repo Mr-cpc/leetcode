@@ -1,0 +1,54 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isTg(TreeNode p, TreeNode q) {
+        if(p == null && q == null)
+            return  true;
+        else
+        {
+            if( (p == null && q != null) || (p !=null && q == null) )
+                return false;
+            else
+            {
+                if(onlyHasLeft(p) && onlyHasRight(q) )
+                    return p.val == q.val && isTg(p.left,q.right);
+                if(onlyHasLeft(q) &&onlyHasRight(p))
+                    return p.val == q.val && isTg(p.right,q.left);
+                if(hasBoth(p) && hasBoth(q) )
+                {
+                    return p.val == q.val && p.left.val == q.right.val && p.right.val == q.left.val && isTg(p.left,q.right) && isTg(p.right,q.left);
+                }
+                if(p.left == null && p.right ==null && q.left == null && q.right ==null)
+                return p.val == q.val;
+            }
+             return false;   
+        }
+        
+    }
+    public boolean onlyHasLeft(TreeNode p)
+    {
+        return p.left != null && p.right == null;
+    }
+    public boolean onlyHasRight(TreeNode p)
+    {
+        return p.left == null && p.right != null;
+    }
+    public boolean hasBoth(TreeNode p)
+    {
+        return p.left != null && p.right != null;
+    }
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null)
+            return true;
+        else
+            return isTg(root.left,root.right);
+        
+    }
+}

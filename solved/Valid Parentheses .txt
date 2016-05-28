@@ -1,0 +1,35 @@
+public class Solution 
+{
+    public boolean isMatch(char c1,char c2)
+    {
+        if( (c1 == '}' && c2 == '{') || (c1 == ')' && c2 == '(' )|| (c1 ==']' && c2=='[') )
+            return true;
+        return false;
+    }
+    public boolean isValid(String s) 
+    {
+        char c[]  = s.toCharArray();
+        if(c[0] == ']' || c[0] == ')' ||c[0] == '}')
+            return false;
+        Stack<Character> a = new Stack<Character>();
+        a.push(c[0]);
+        int i = 1;
+        while( i<c.length )
+        {
+            if( isMatch( c[i],a.peek() ) )
+            {
+                a.pop();
+                if(a.empty() && i < c.length-1)
+                    a.push(c[++i]);
+            }
+            else
+            {
+                a.push(c[i]);
+            }
+            i++;
+        }
+        if(a.empty())
+            return true;
+        return false;
+    }
+}

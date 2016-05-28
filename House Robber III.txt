@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution 
+{
+    public int getHeight(TreeNode root)
+    {
+        if(root == null)
+        return 0;
+        int lh = getHeight(root.left);
+        int rh = getHeight(root.right);
+        return lh > rh ? lh+1 : rh+1;
+    }
+    public List<TreeNode> getSameLayer(TreeNode root,int n)
+    {
+        List<TreeNode> l= new ArrayList<TreeNode>();
+        if(n == 1)
+        {
+            l.add(root);
+        }
+        else
+        {
+            List<TreeNode> l1 = getSameLayer(root,n-1);
+            Iterator<TreeNode> it = l1.iterator();
+			while(it.hasNext())
+			{
+				TreeNode node = it.next();
+				if(node.left != null)
+					l.add(node.left);
+				if(node.right != null)
+					l.add(node.right);
+			}
+		
+		}
+        return l;
+    }
+    public int sum(List<TreeNode> l)
+    {
+        int  sum = 0;
+        for(int i=0;i<l.size();i++)
+            sum += l.get(i).val;
+        return sum;
+    }
+    public int rob(TreeNode root) 
+    {
+        int height = getHeight(root);
+        List<TreeNode>[] l = new ArrayList[height];
+        for(int i= 0;i<l.length;i++)
+            l[i] = getSameLayer(root,i);
+        int sum1 = 0;
+        int sum2 = 0;
+        for(int i = 0;i<l.length;i+= 2)
+         sum1 += sum(l[i]);
+        for(int i = 1;i<l.length;i+=2)
+         sum2 += sum(l[i]);
+         return sum1>sum2?sum1:sum2;
+    }
+}

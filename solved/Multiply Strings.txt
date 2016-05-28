@@ -1,0 +1,41 @@
+public class Solution {
+    public int atoi(char c)
+    {
+        return c - '0';
+    }
+    public void cheng(char[] res,char c,char[] des,int st)
+    {
+        int jin = 0,jin1 = 0;
+        int x = atoi(c);
+        for(int i = res.length -1;i>=0;i--)
+        {
+            int a = jin + atoi(res[i]) * x;
+            int ans = jin1 + atoi(des[st]) + a % 10;
+            des[st--] = (char)(ans % 10 +'0');
+            jin1 = ans / 10;
+            jin = a / 10;
+        }
+        if(jin1 != 0 || jin != 0)
+            des[st] = (char)(jin+jin1+'0');
+    }
+    public String multiply(String num1, String num2) 
+    {
+        if(num1.equals("0") || num2.equals("0"))
+            return "0";
+        char[] n1 = num1.toCharArray(),n2 = num2.toCharArray();
+        char des[] = new char[n1.length+n2.length];
+    	for(int i =0;i<des.length;i++)
+    		des[i] = '0';
+    	
+        int st = des.length - 1;
+        for(int j = n1.length-1;j>=0;j--)
+            cheng(n2,n1[j],des,st--);
+            
+
+        if(des[0] != '0')
+            return new String(des);
+        else
+            return new String(des,1,des.length-1);
+    }
+}
+//5ms,Your runtime beats 98.54% of javasubmissions

@@ -1,0 +1,170 @@
+class MedianFinder 
+{
+    MaxHeap maxHeap = new MaxHeap();
+    MinHeap minHeap = new MinHeap();
+    static class MaxHeap()
+    {
+        List<Integer> mHeap;
+        public int size;
+        MaxHeap()
+        {
+            mHeap = new ArrayList<Integer>();
+        }
+        public void add(int i)
+        {
+            mHeap.add(++size,i);
+            adjust(size);
+        }
+        public void adjust(int pos)
+        {
+            if(pos == 1)
+                return;
+            int par = pos >> 1,po = mHeap.get(pos),pa = mHeap.get(par);
+            if(po > pa )
+            {
+                mHeap.add(par,po);
+                mHeap.add(pos,pa);
+                adjust(par);
+            }
+        }
+        public void downAdjust(int i)
+        {
+            if(2 * i >size)
+                return;
+            if(2 * 1 + 1 > size && mHeap.get(i)>mHeap.get(2*i) )
+                return;
+            else
+            {
+                if(2*i+1>size)
+                {
+                    swap(mHeap,i,2*i);
+                    downAdjust(2*i);
+                }
+                else
+                {
+                    int max = mHeap.get(2*i)>mHeap.get(2*i+1)?2*i:2*i+1;
+                    swap(mHeap,i,max);
+                    downAdjust(max);
+                }
+            }
+            
+        }
+        public int remove()
+        {
+            int d = mHeap.get(1);
+            mHeap.add(1,mHeap.get(size) );
+            mHeap.remove(size--);
+            downAdjust(1);
+            return d;
+        }
+        public int peek()
+        {
+            return mHeap.get(1);
+        }
+    }
+    public static void swap(List<Integer> l,int i,int j)
+    {
+        int t = l.get(i);
+        l.add(i,l.get(j));
+        l.add(j,t);
+    }
+    static class MinHeap()
+    {
+        List<Integer> mHeap;
+        int size;
+        MinHeap()
+        {
+            mHeap = new ArrayList<Integer>();
+        }
+        public void add(int i)
+        {
+            mHeap.add(++size,i);
+            adjust(size);
+        }
+        public void downAdjust(int i)
+        {
+            if(2 * i >size)
+                return;
+            if(2 * 1 + 1 > size && mHeap.get(i)<mHeap.get(2*i) )
+                return;
+            else
+            {
+                if(2*i+1>size)
+                {
+                    swap(mHeap,i,2*i);
+                    downAdjust(2*i);
+                }
+                else
+                {
+                    int min = mHeap.get(2*i)<mHeap.get(2*i+1)?2*i:2*i+1;
+                    swap(mHeap,i,min);
+                    downAdjust(min);
+                }
+            }
+            
+        }
+        public void adjust(int pos)
+        {
+            if(pos == 1)
+                return;
+            int par = pos << 1;
+            if(po < pa )
+            {
+                swap(mHeap,par,pos);
+                adjust(par);
+            }
+        }
+        public int remove()
+        {
+            int d = mHeap.get(1);
+            mHeap.add(1,mHeap.get(size) );
+            mHeap.remove(size--);
+            downAdjust(1);
+            return d;
+        }
+        public int peek()
+        {
+            return mHeap.get(1);
+        }
+    }
+    // Adds a number into the data structure.
+    public void addNum(int num) 
+    {
+        if(maxHeap.size <= minHeap.size)
+        {
+            if(num>=minHeap.peek() )
+                maxHeap.add(num);
+            else
+            {
+                maxHeap.add(minHeap.remove() );
+                minHeap.add(num);
+            }
+        }
+        else
+        {
+            if(num<=minHeap.peek() )
+                minHeap.add(num);
+            else
+            {
+                minHeap.add(maxHeap.remove() );
+                maxHeap.add(num);
+            }            
+        }
+    
+            
+    }
+
+    // Returns the median of current data stream
+    public double findMedian() 
+    {
+        if(maxHeap.size == minHeap.size)
+            return ( (double) (maxHeap.peek() ) + (double) (minHeap.peek() ) ) >> 1;
+        else
+            return (double) (maxHeap.peek());
+    }
+};
+
+// Your MedianFinder object will be instantiated and called as such:
+// MedianFinder mf = new MedianFinder();
+// mf.addNum(1);
+// mf.findMedian();

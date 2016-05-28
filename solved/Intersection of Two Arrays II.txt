@@ -1,0 +1,119 @@
+public class Solution {
+    List<Integer> l = new ArrayList<Integer>();
+    public int[] intersect(int[] nums1, int[] nums2) 
+    {
+        if(nums1.length == 0 || nums2.length == 0)
+            return new int[0];
+        TreeMap<Integer,Integer> tm1 = new TreeMap<Integer,Integer>();
+        TreeMap<Integer,Integer> tm2 = new TreeMap<Integer,Integer>();
+        for(int i = 0;i<nums1.length;i++)
+        {
+            if(tm1.containsKey(nums1[i]) )
+                tm1.put(nums1[i],tm1.get(nums1[i])+1 );
+            else
+                tm1.put(nums1[i],1);
+        }
+        for(int i = 0;i<nums2.length;i++)
+        {
+            if(tm2.containsKey(nums2[i]) )
+                tm2.put(nums2[i],tm2.get(nums2[i])+1 );
+            else
+                tm2.put(nums2[i],1);
+        }
+        Set<Integer> s1 = tm1.keySet();
+        Set<Integer> s2 = tm2.keySet();
+        Iterator<Integer> it1 = s1.iterator();
+        Iterator<Integer> it2 = s2.iterator();
+        Integer num1 = it1.next(),num2 = it2.next();
+     /*   if(num1.equals(num2) )
+        {
+            l.add(tm1.get(num1)<=tm2.get(num2)?num1:num2);
+            if(it1.hasNext() )
+                num1 = it1.next();
+            if(it2.hasNext() )
+                num2 = it2.next();
+        }*/
+        do
+        {
+            if(!num1.equals(num2) )
+            {
+                if(!it1.hasNext() && !it2.hasNext() )
+                    break;
+                if(num1<num2)
+                {
+                    if(it1.hasNext() )
+                        num1 = it1.next();
+                    else
+                        break;
+                }
+
+                else
+                {
+                    if(it2.hasNext())
+                        num2 = it2.next();
+                    else
+                        break;
+                }
+            }
+                
+            else
+            {  
+                int freq1 = tm1.get(num1),freq2 = tm2.get(num2);
+                if(freq1<=freq2)
+                {
+                    for(int i = 1;i<=freq1;i++)
+                    l.add(num1);
+                }
+                else
+                {
+                     for(int i = 1;i<=freq2;i++)
+                        l.add(num2);                   
+                }
+                if(!it1.hasNext() || !it2.hasNext() )
+                    break;
+                else
+                {
+                    num1 = it1.next();
+                    num2 = it2.next();
+                }
+            }
+            
+        }while(true );
+       /* if(!it1.hasNext() && it2.hasNext())
+        {
+            if(num1.equals(num2))
+            {
+                int freq1 = tm1.get(num1),freq2 = tm2.get(num2);
+                for(int i = 1,freq = freq1<=freq2?freq1:freq2;i<=freq;i++)
+                    l.add(freq1<=freq2?num1:num2);
+            }
+        }
+        if(!it2.hasNext() && it1.hasNext())
+        {
+            if(num2.equals(num1))
+            {
+                int freq1 = tm1.get(num1),freq2 = tm2.get(num2);
+                for(int i = 1,freq = freq1<=freq2?freq1:freq2;i<=freq;i++)
+                    l.add(freq1<=freq2?num1:num2);
+            }
+        }
+        if(!it2.hasNext() && !it1.hasNext())
+        {
+            if(num2.equals(num1))
+            {
+                int freq1 = tm1.get(num1),freq2 = tm2.get(num2);
+                for(int i = 1,freq = freq1<=freq2?freq1:freq2;i<=freq;i++)
+                    l.add(freq1<=freq2?num1:num2);
+            }
+        }*/
+        int size = l.size();
+        int[] ans = new int[size]; 
+        Iterator<Integer> it = l.iterator();
+        int i = 0;
+        while(it.hasNext() )
+        {
+            ans[i++] = it.next();
+        }
+        return ans;
+    }
+}

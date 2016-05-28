@@ -1,0 +1,40 @@
+public class Solution {
+    int tmp;
+    public void swap(int[] a,int i,int j )
+    {
+        tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    public int removeElement(int[] nums, int val) 
+    {
+        int i = 0,j = nums.length-1,l = nums.length;
+        while(i<=j)
+        {
+            if(nums[i] == val)
+            {
+                l--;
+                if(nums[j] != val)
+                {
+                    swap(nums,i,j);
+                    j--;
+                }
+                else
+                {
+                    while(nums[j] == val &&i<j)
+                    {
+                        l--;
+                        j--;
+                    }
+                    if(i<j)
+                    {
+                        swap(nums,i,j);
+                        j--;
+                    }
+                }
+            }
+            i++;
+        }
+        return l;
+    }
+}

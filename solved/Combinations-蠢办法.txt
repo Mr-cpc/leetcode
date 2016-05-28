@@ -1,0 +1,42 @@
+public class Solution {
+    public List<List<Integer>> subsets(int nums) 
+    {
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        List<Integer> l = new ArrayList<Integer>();
+        if(nums == 0)
+        {
+            ans.add(l);
+            return ans;
+        }
+        //Arrays.sort(nums);
+        int a = (int)Math.pow(2,nums);
+        for(int i = 0;i<a;i++)
+        {
+            l = new ArrayList<Integer>();
+            for(int j = 0;j<nums;j++)
+            {
+                
+                if(((i>>j) & 1) == 1 )
+                {
+                    l.add(j+1);
+                }
+                
+            }
+            ans.add(l);
+        }
+        return ans;
+    }
+    public List<List<Integer>> combine(int n, int k) 
+    {
+        List<List<Integer>> t = subsets(n);
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        List<Integer> l = null;
+        for(int i = 0,size = t.size();i<size;i++)
+        {
+            l = t.get(i);
+            if(l.size() == k)
+                ans.add(l);
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,26 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    List<Integer> l = new ArrayList<Integer>();
+    public void inordertraversal(TreeNode root) 
+    {
+        if(root != null)
+        {
+            inorderTraversal(root.left);
+            l.add(root.val);
+            inorderTraversal(root.right);
+        }
+    }
+    public List<Integer> inorderTraversal(TreeNode root) 
+    {
+        inordertraversal(root);
+        return l;
+    }
+}

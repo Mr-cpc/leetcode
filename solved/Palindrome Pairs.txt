@@ -1,0 +1,35 @@
+public class Solution
+{
+    public boolean isHuiwen(String a ,String b)
+    {
+        String c = a + b;
+        char[] d = c.toCharArray(); 
+        for(int i = 0;i<c.length()/2;i++)
+        {
+            if(d[i] != d[d.length-i-1])
+                return false;
+        }
+        return true ;
+    }
+    public List<List<Integer>> palindromePairs(String[] words) 
+    {
+
+        List<List<Integer>> l = new ArrayList<List<Integer>>();
+        List<Integer> l1 = null;
+        for(int i = 0;i<words.length;i++)
+        {
+            for(int j = 0;j<words.length;j++)
+            {
+                
+                if(i != j && isHuiwen(words[i],words[j]))
+                {
+                    l1 = new ArrayList<Integer>();
+                    l1.add(i);
+                    l1.add(j);
+                    l.add(l1);
+                }
+            }
+        }
+        return l;
+    }
+}

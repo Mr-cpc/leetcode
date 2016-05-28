@@ -1,0 +1,72 @@
+public class Solution {
+    TreeMap<Character,Integer> hs = new TreeMap<Character,Integer>();
+    TreeMap<Character,Integer> hg = new TreeMap<Character,Integer>();
+    public void add(TreeMap<Character,Integer> h,char c)
+    {
+        if(h.containsKey(c) )
+            h.put(c,h.get(c) + 1 );
+        else
+            h.put(c,1);
+    }
+    public String getHint(String secret, String guess) 
+    {
+        int bulls = 0, cows = 0;
+        char s,g;
+        for(int i = 0,length = secret.length();i< length;i++)
+        {
+            s = secret.charAt(i);
+            g = guess.charAt(i);
+            if(s == g)
+                bulls++;
+            else
+            {
+                add(hs,s);
+                add(hg,g);
+            }
+        }
+        Set<Character> ss = hs.keySet();
+        Set<Character> sg = hg.keySet();
+        Iterator<Character> its = ss.iterator();
+        Iterator<Character> itg = sg.iterator();
+        if(its.hasNext() && itg.hasNext())
+        {
+            s = its.next();
+            g =  itg.next();
+        }
+        else
+            return bulls + "A" + cows + "B";
+        do
+        {
+            if(s == g)
+            {
+                cows += hs.get(s)<=hg.get(g)?hs.get(s):hg.get(g);
+                if(its.hasNext())
+                    s = its.next();
+                else
+                    break;
+                if(itg.hasNext())
+                    g = itg.next();  
+                else
+                    break;
+            }
+            else
+            {
+                if(s < g)
+                {
+                    if(its.hasNext())
+                        s = its.next();
+                    else
+                        break;
+                }
+                else
+                {
+                    if(itg.hasNext() )
+                        g = itg.next();
+                    else
+                        break;
+                }
+            }
+        }while(true);
+        return bulls + "A" + cows + "B";
+    }
+}

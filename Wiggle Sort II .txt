@@ -1,0 +1,43 @@
+public class Solution {
+    public void swap(int[] a,int i,int j )
+    {
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    public void wiggleSort(int[] nums) {
+        Arrays.sort(nums);
+        if(nums.length>2)
+        {
+            int i = 2;
+            do
+            {
+                
+                if(i+1<nums.length)
+                {
+                    if(nums[i-1] == nums[i] && nums[i] == nums[i+1])
+                    {
+                        for(int k = 0;k<nums.length;k++)
+                            nums[k] = 0;
+                        return;
+                    }
+                    swap(nums,i,i+1);
+                }
+                i += 2 ;
+            }
+            while(i<nums.length);
+        }
+       /* else
+        {
+            if(nums.length<=1)
+                return ;
+            else
+            {
+                if(nums[0]<nums[1])
+                    return ;
+                else
+                    swap(nums,0,1);
+            }
+        }*/
+    }
+}

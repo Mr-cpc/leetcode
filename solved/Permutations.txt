@@ -1,0 +1,77 @@
+public class Solution {
+    //boolean f = true;
+    public int factorial(int n)
+    {
+        if(n == 1)
+            return n;
+        else
+        return n * factorial(n - 1);
+    }
+    public void swap(int a[],int i ,int j)
+    {
+        int t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+        //a[i] = a[i] + a[j];
+        //a[j] = a[i] - a[j];
+        //a[i] = a[i] - a[j];
+    }
+    public int[] nextP(int a[])
+    {
+       // if(a.length == 1)
+        //{
+       //     return a;
+       // }
+        int i;
+        for(i = a.length-1;i>0;i--)
+            if(a[i-1]<a[i])
+                break;
+        if(i == 0)
+        {
+        for(int j = 0;j<=(a.length-1)/2;j++)
+        {
+            swap(a,j,a.length -1-j);
+           // a[j] = a[j] ^ a[a.length-1-j];
+           // a[a.length-1-j] = a[j] ^ a[a.length-1-j];
+           // a[j] = a[j] ^ a[a.length-1-j];
+        }
+            return a;
+        }
+        int min = Integer.MAX_VALUE,index = 0;
+        for(int j = i;j<a.length;j++)
+        {
+            if(a[j]>a[i-1] && a[j]<min)
+            {
+                min = a[j];
+                index = j;
+            }
+        }
+        swap(a,i-1,index);
+        //a[i-1] = a[i-1] ^ a[index];
+       // a[index]  = a[i-1] ^ a[index];
+        //a[i-1] = a[i-1] ^ a[index];
+        for(int j = i;j<=(a.length-1+i)/2;j++)
+        {
+            swap(a,j,a.length-1+i-j);
+           // a[j] = a[j] ^ a[a.length-1+i-j];
+           // a[a.length-1+i-j] = a[j] ^ a[a.length-1+i-j];
+           // a[j] = a[j] ^ a[a.length-1+i-j];
+        }
+        return a;
+    }
+    public List<List<Integer>> permute(int[] nums) 
+    {
+        List<List<Integer>> l = new ArrayList<List<Integer>>();
+        List<Integer> l1 = null;
+        int f = factorial(nums.length);
+        for(int i = 0;i<f;i++)
+        {
+            l1 = new ArrayList<Integer>();
+            for(int j = 0;j<nums.length;j++)
+                l1.add(nums[j]);
+            l.add(l1);
+            nums = nextP(nums);
+        }
+        return l;
+    }
+}

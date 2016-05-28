@@ -1,0 +1,29 @@
+public class Solution {
+    public int find(int start,int end,int root)
+    {
+        if(start == end)
+            return 1;
+        int sumf = 0,sumr= 0;
+        if(start == root)
+            sumf = 1;
+        if(end == root)
+            sumr = 1;
+        sumf = find(start,root-1);
+        sumr = find(root+1,end);
+        return sumf * sumr;
+        
+    }
+    public int find(int start,int end)
+    {
+        if(start == end)
+            return 1;
+        int sum = 0;
+        for(int i = start;i<=end;i++)
+            sum += find(start,end,i);
+        return sum;
+    }   
+    public int numTrees(int n) 
+    {
+        return find(1,n);
+    }
+}

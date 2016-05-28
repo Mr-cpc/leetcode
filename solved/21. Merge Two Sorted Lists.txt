@@ -1,0 +1,106 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution 
+{
+    public int getLen(ListNode head)
+    {
+        int len= 0;
+        ListNode t = head;
+        while(t != null)
+        {
+            len++;
+            t = t.next;
+        }
+        return len;
+    }
+    public ListNode listReverse(ListNode head)
+    {
+        if(head == null)
+            return null;
+        if(head.next == null)
+            return head;
+        ListNode tmp1 = head,tmp2 = head.next,tmp3;
+        while(tmp2 != null && tmp1 != null)
+        {
+            tmp3 = tmp2.next;
+            tmp2.next = tmp1;
+            tmp1 = tmp2;
+            tmp2 = tmp3;
+        }
+        head = tmp1;
+        head.next = tmp2;
+        return head;
+    }
+    public ListNode findNode(ListNode head,int n)
+    {
+        for(int i = 0;i<n-1;i++)
+            head = head.next;
+        return head;
+    }
+    public int getShang(int a,int b)
+    {
+        int c= a%b;
+        return (a-c)/b;
+    }
+    public ListNode[] listSplit(int k,ListNode head)
+    {
+        int len = getLen(head);
+        if(k<=len)
+        {
+            ListNode[] l = new ListNode[1];
+            l[0] = head;
+            return l;
+        }
+        int a = len % k;
+        int shang = (len-a)/k;
+        ListNode[] l = null;
+        if(a == 0)
+            l = new ListNode[shang];
+        else
+            l = new ListNode[shang+1];
+        ListNode tmp = head;
+        l[0] = head;
+        for(int i = 1;i<shang;i++)
+        {
+            ListNode k1 = findNode(tmp,k);
+            tmp = k1.next;
+            k1.next = null;
+            l[i] = tmp;
+        }
+        return l;
+        
+    }
+    public ListNode swapFirstTwoNodes(ListNode head)
+    {
+        if(head == null)
+            return null;
+        if(head.next == null)
+            return head;
+        ListNode tmp1 = head,tmp2 = head.next;
+        head = tmp2;
+        head.next = tmp1;
+        tmp1.next = tmp2.next;
+        return head;
+
+    }
+    public ListNode swapPairs(ListNode head) 
+    {
+        if(head == null)
+        return null;
+        ListNode[] l = listSplit(2,head);
+        for(int i = 0;i<l.length;i++)
+            listReverse(l[i]);
+        for(int i =0;i<l.length-1;i++)
+        {
+            ListNode a = findNode(l[i],2);
+            a.next = l[i+1];
+        }
+        return head;
+    }
+}

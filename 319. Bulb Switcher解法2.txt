@@ -1,0 +1,26 @@
+public class Solution {
+    public int cishu(int n)
+    {
+        int cishu = 0;
+        for(int i = 2;i<n/2;i++)
+            if(n % i == 0)
+                cishu++;
+        return cishu;
+    }
+    public boolean isOdd(int n)
+    {
+        return n % 2 == 1;
+    }
+    public int bulbSwitch(int n) 
+    {
+        int count = 0;
+        for(int i = 1;i<=n;i++)
+        {
+            int cishu = cishu(i);
+            if(isOdd(cishu))
+                count++;
+        }
+  
+        return count;
+    }
+}

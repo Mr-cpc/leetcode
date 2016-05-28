@@ -1,0 +1,37 @@
+public class Solution {
+    public int bSearch(int[] nums,int start,int end,int tar)
+    {
+        if(end<0)
+    	    return -1;
+        if(start == end && nums[end] != tar)
+        return -1;
+        int mid = (start + end) / 2;
+        if(tar == nums[mid])
+            return mid;
+        if(tar < nums[mid])
+            return bSearch(nums,start,mid-1,tar);
+        else
+            return bSearch(nums,mid + 1,end,tar);
+    }
+    public int search(int[] nums, int target) {
+        if(nums.length == 1)
+        {
+            if(target != nums[0])
+                return -1;
+            else return 0;
+        }
+        int i;
+        for(i = 0;i<nums.length-1;i++)
+        {
+            if(nums[i]> nums[i+1])
+            break;
+        }
+        if(i == nums.length -1)
+            return bSearch(nums,0,i,target);;
+        int index = bSearch(nums,0,i,target);
+        if(index == -1)
+            return bSearch(nums,i+1,nums.length-1,target);
+        else
+            return index;
+    }
+}

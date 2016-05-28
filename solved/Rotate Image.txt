@@ -1,0 +1,30 @@
+public class Solution {
+    int tmp;
+    public void transpose(int[][] m )
+    {
+        for(int i = 0;i<m.length-1;i++)
+        {
+            for(int j = i+1;j<m[i].length;j++)
+            {
+                tmp = m[i][j];
+                m[i][j] = m[j][i];
+                m[j][i] = tmp;
+            }
+        }
+    }
+    public void swColumn(int[][]m,int k,int j )
+    {
+        for(int i = 0;i<m.length;i++)
+        {
+            tmp = m[i][k];
+            m[i][k] = m[i][j];
+            m[i][j] = tmp;
+        }
+    }
+    public void rotate(int[][] matrix) 
+    {
+        transpose(matrix);
+        for(int i = 0;i<=(matrix.length-1)/2;i++)
+        swColumn(matrix,i,matrix.length-1-i);
+    }
+}

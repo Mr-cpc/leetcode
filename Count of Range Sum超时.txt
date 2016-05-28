@@ -1,0 +1,25 @@
+public class Solution {
+    public int countSum(int[] a,int m,int n)
+    {
+        int sum = 0;
+        for(int i = m;i<=n;i++)
+        {
+            sum+=a[i];
+        }
+        return sum;
+    }
+    public int countRangeSum(int[] nums, int lower, int upper) 
+    {
+        int sum = 0,count = 0;
+        for(int i = 0;i<nums.length;i++)
+        {
+            for(int j =i;j<nums.length;j++)
+            {
+                sum = countSum(nums,i,j);
+                if(sum<=upper && sum>=lower)
+                    count++;
+            }
+        }
+        return count;
+    }
+}
