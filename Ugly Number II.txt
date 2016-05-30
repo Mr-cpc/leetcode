@@ -1,0 +1,95 @@
+public class Solution {
+    int[] res;
+    public int nthUglyNumber(int n) {
+        res = new int[n];
+        MinHeap mh = new MinHeap(3*n);
+        //mh.add(1);
+        int l1,l2,l3;
+        mh.add(1);
+
+        for(int i = 0;i<n;i++)
+        {
+            res[i] = mh.remove();
+            l1 = res[i] << 1;
+            l2 = res[i] * 3;
+            l3 = res[i] * 5;
+            mh.add(l1);
+            mh.add(l2);
+            mh.add(l3);
+            
+        }
+        return res[n-1];
+    }
+}
+
+class MinHeap{
+    int[] heap;
+    int size;
+    final int MAX_SIZE;
+    public MinHeap(int size){
+        heap = new int[size+1];
+        this.MAX_SIZE = size;
+    }
+    private void adjust(int[] a,int i,int j)
+    {
+        if(a[i]>a[j])
+            swap(a,i,j);
+        
+    }
+    private void swap(int[] a,int i ,int j)
+    {
+            int t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+    }
+    private void downAdjust(int pos)
+    {
+        if(pos *2 > MAX_SIZE)
+            return;
+        else
+        {
+            if(pos * 2 + 1>MAX_SIZE)
+                adjust(heap,pos,pos*2);
+            else
+            {
+                if(heap[pos]<=heap[pos*2] && heap[pos]<= heap[pos*2+1] )
+                    return ;
+                else
+                {
+                    int min = heap[pos*2] <= heap[pos*2+1]?pos*2:pos*2+1;
+                    swap(heap,pos,min);
+                    downAdjust(min);
+                }
+            }
+        }
+    }
+    private void upAdjust(int pos)
+    {
+        if(pos == 1)
+            return ;
+        int par = pos >> 1 ;
+        if(heap[pos]<heap[par])
+        {
+            swap(heap,pos,par);
+            upAdjust(par);
+        }
+    }
+    public void add(int x){
+        for(int i = 1;i<=size;i++)
+            if(heap[i] == x)
+                return;
+        if(size < MAX_SIZE){
+            heap[++size] = x;
+            upAdjust(size);
+        }
+            
+    }
+    public int remove()
+    {
+        int x = heap[1];
+        heap[1] = heap[size--];
+        downAdjust(1);
+        return x;
+    }
+    
+}
