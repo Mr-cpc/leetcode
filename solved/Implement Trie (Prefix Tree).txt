@@ -1,0 +1,114 @@
+class TrieNode {
+    // Initialize your data structure here.
+    char data;
+    ChildNode firstChild;
+    boolean flag;
+    public TrieNode() {}
+    public TrieNode(char data) {
+        this.data = data;
+        
+    }
+    public TrieNode addChild(char c) {
+        TrieNode ch = new TrieNode(c);
+        ChildNode cn = new ChildNode(ch);
+        if(firstChild == null)
+            firstChild = cn;
+        else
+        {
+            cn.nextChild = firstChild.nextChild;
+            firstChild.nextChild = cn;
+        }
+        return ch;
+    }
+    public TrieNode hasChild(char c)
+    {
+        if(firstChild == null)
+            return null;
+        else {
+            ChildNode t = firstChild;
+            while(t != null) {
+                if(t.child.data == c)
+                    return t.child;
+                else
+                    t = t.nextChild;
+            }
+            return null;
+        }
+    }
+}
+class ChildNode {
+    ChildNode  nextChild;
+    TrieNode child;
+    public ChildNode(TrieNode child) {
+        this.child = child;
+    }
+}
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode t = root,tmp,x;
+        int i = 0;
+        for(int l = word.length();i<l;i++ )
+        {
+            tmp = t.hasChild(word.charAt(i));
+            if(tmp != null ) 
+                t = tmp;
+            else {
+                while(i<l) {
+                    
+                    t = t.addChild(word.charAt(i)); 
+                    i++;
+                }
+                t.flag = true;
+            }
+            
+        }
+        t.flag = true;
+        
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode t = root,tmp;
+        for(int i = 0,l = word.length();i<l;i++ )
+        {
+            tmp = t.hasChild(word.charAt(i));
+            if(tmp != null ) 
+                t = tmp;
+            else 
+                return false;
+            
+            
+        }
+        return t.flag;
+        
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        TrieNode t = root,tmp;
+        for(int i = 0,l = prefix.length();i<l;i++ )
+        {
+            tmp = t.hasChild(prefix.charAt(i));
+            if(tmp != null ) 
+                t = tmp;
+            else 
+                return false;
+            
+            
+        }
+        return true;
+    }
+}
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie = new Trie();
+// trie.insert("somestring");
+// trie.search("key");
