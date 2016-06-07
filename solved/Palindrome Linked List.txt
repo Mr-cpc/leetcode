@@ -1,0 +1,80 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    ListNode q,s;
+    public int len(ListNode head) {
+        int len  = 0;
+        while(head !=null) {
+            head = head.next;
+            len++;
+        }
+        return len;
+    }
+    public  ListNode qsPointer(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        q = head;
+        s = head;
+        while(q.next != null) {
+            q = q.next;
+            if(q.next != null) {
+                q = q.next;
+                s = s.next;
+            }
+        }
+        return s;
+    }
+    public  ListNode reverse(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        ListNode pre= head,sec = head,next;
+        while(sec != null) {
+            next = sec.next;
+            sec.next = pre;
+            pre = sec;
+            sec = next;
+        }
+        head.next = null;
+        return pre;
+    }
+    public boolean isPalindrome(ListNode head) {
+        if(head == null || head.next == null)
+            return true;
+        int len = len(head);
+
+        ListNode t = head,mid = qsPointer(head),hou = reverse(mid.next);
+        if(len %2 == 1)
+        {
+        while(t != mid) {
+            if(t.val == hou.val) {
+                t = t.next;
+                hou = hou.next;
+            }
+            else
+                return false;
+        } 
+            return true;
+        }
+        else
+        {
+            while(t != mid.next) {
+            if(t.val == hou.val) {
+                t = t.next;
+                hou = hou.next;
+            }
+            else
+                return false;
+        } 
+            return true;
+        }
+        
+        
+        
+    }
+}
