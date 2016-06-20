@@ -1,0 +1,36 @@
+public class Solution {
+    public int baoliSearch(String str,String pat)
+	{
+		if(str.length()<pat.length())
+            return -1;
+        if(str.equals("") || pat.equals("") )
+            return 0;
+		int i,tmp,j;
+		for(i = 0;i<=str.length() - pat.length();i++)
+		{
+		    tmp = i;
+			for(j = 0;j<pat.length();j++)
+			{
+
+				if(str.charAt(i)==pat.charAt(j))
+				{
+					if(j==pat.length()-1)
+						return i-j;
+                    else
+                        i++;
+				}
+				else
+					break;	
+				
+			}
+			i = tmp;
+		}
+
+		return -1;
+		
+	}
+    public int strStr(String haystack, String needle) 
+    {
+        return baoliSearch(haystack,  needle);
+    }
+}

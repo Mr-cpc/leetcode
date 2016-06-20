@@ -1,0 +1,21 @@
+public class Solution {
+    HashMap<Integer,Integer> hm = new HashMap<Integer,Integer>();
+    List<Integer> l = new ArrayList<Integer>();
+    public List<Integer> majorityElement(int[] nums) {
+        for(int i :nums) {
+            if(hm.containsKey(i) ) 
+                hm.put(i,hm.get(i)+1 );
+            else 
+                hm.put(i,1);
+            
+        }
+        Iterator it = hm.entrySet().iterator();
+        int s = (nums.length / 3);
+        while(it.hasNext() ) {
+            Map.Entry e = (Map.Entry)it.next();
+            if((Integer) e.getValue() > s)
+                l.add((Integer)e.getKey() );
+        }
+        return l;
+    }
+}
