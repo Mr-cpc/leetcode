@@ -7,47 +7,33 @@
  * }
  */
 public class Solution {
-    ListNode t,preM,N,nNext;
-    public ListNode reverse(ListNode head)
-    {
-        if(head == null || head.next == null)
-            return head;
-        ListNode x = head.next,pre = head,tmp = null,re = null;
-        while(x != null)
-        {
-            tmp = x.next;
-            if(tmp == null)
-            {
-                re = x;
-            }
-            x.next = pre;
-            pre = x;
-            x = tmp;
+    ListNode preM,t;
+    public ListNode findNthNode(int n,ListNode head) {
+        while(n>1) {
+            head = head.next;
+            n--;
         }
-        return re;
+        return head;
     }
+  
     public ListNode reverseBetween(ListNode head, int m, int n) 
     {
         if(head == null || head.next == null || m == n)
             return head;
-        ListNode l = head;
-        if(m == 1)
-        {
-            
-        }
-        for(int i =1;i<m-1;i++)
-            l = l.next;
-        preM = l;
-        for(int i = 0;i<n-n+1;i++)
-            l= l.next;
-        N = l;
-        nNext = N.next;
-        N.next = null;
-        preM.next = reverse(preM.next);
-        l = preM;
-        for(int i=0;i<m-n;i++)
-            l = l.next;
-        l.next = nNext;
-        return head;
+        ListNode newH = new ListNode(0);
+        newH.next = head;
+        preM = findNthNode(m,newH);
+        ListNode pre = preM.next,next = pre.next,s = pre;
+        int i = n-m-1;
+         do {
+            t = next.next;
+            next.next = pre;
+            pre = next;
+            next = t;
+            i--;
+        }while(i>1);
+        preM.next = pre;
+        s.next = next;
+        return newH.next;
     }
 }

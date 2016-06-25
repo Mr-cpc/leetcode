@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    TreeNode one,two,pre;
+    public void swap(TreeNode a,TreeNode b) {
+        int t = a.val;
+        a.val = b.val;
+        b.val = t;
+    }
+    public void midTra(TreeNode root) {
+        if(root != null) {
+            midTra(root.left);
+            if(pre != null && pre.val > root.val) {
+                if(one == null){
+                    one = pre;
+                    two = root;
+                }
+                else
+                    two = root;
+            }
+            pre = root;
+            midTra(root.right);
+                
+        }
+    }
+    public void recoverTree(TreeNode root) {
+        if(root == null)
+            return ;
+        midTra(root);
+        swap(one,two);
+        
+    }
+}
