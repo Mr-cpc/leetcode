@@ -1,0 +1,12 @@
+public class Solution {
+    public int mySqrt(int x) {
+        double pre,cur = 1;
+        do
+        {
+            pre = cur;
+            cur = (x/pre + pre)  / 2.0;
+            
+        }while(Math.abs(cur-pre)>0.001 );
+        return (int)cur;
+    }
+}
