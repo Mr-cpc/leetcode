@@ -1,0 +1,39 @@
+public class Solution {
+    TreeMap<Character,Integer> hms = new TreeMap<Character,Integer>();
+    TreeMap<Character,Integer> hmt = new TreeMap<Character,Integer>();
+    public boolean isAnagram(String s, String t) {
+        char[] ss = s.toCharArray(),tt = t.toCharArray(); 
+        for(char c:ss) {
+            if(hms.containsKey(c) )
+                hms.put(c,hms.get(c) + 1 );
+            else
+                hms.put(c,1);
+        }
+        for(char c:tt) {
+            if(hmt.containsKey(c) )
+                hmt.put(c,hmt.get(c) + 1 );
+            else
+                hmt.put(c,1);
+        }
+        if(hmt.size() != hms.size() )
+            return false;
+        else {
+            Iterator its = hms.entrySet().iterator();
+            Iterator itt = hmt.entrySet().iterator();
+            while(its.hasNext() ) {
+                Map.Entry es = (Map.Entry) its.next();
+                Map.Entry et = (Map.Entry) itt.next();
+                Character ks = (Character) es.getKey(),kt = (Character) et.getKey();
+                if(!ks.equals(kt) )
+                    return false;
+                else {
+                    Integer vs = (Integer) es.getValue(),vt = (Integer) et.getValue();
+                    if(!vs.equals(vt) )
+                        return false;
+                }
+            }
+            return true;
+        }
+        
+    }
+}
