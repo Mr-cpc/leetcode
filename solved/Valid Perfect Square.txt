@@ -1,0 +1,11 @@
+public class Solution {
+    public boolean isPerfectSquare(int num) {
+        double pre ,cur = 1;
+        do
+        {
+            pre = cur;
+            cur = (num / cur + cur) / 2;
+        }while(Math.abs(cur - pre) >0.01 );
+        return (cur - (int) cur) < 0.0001;
+    }
+}
