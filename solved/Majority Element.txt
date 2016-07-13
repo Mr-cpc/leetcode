@@ -1,0 +1,18 @@
+public class Solution {
+        int count = 0,maj = 0;
+    public int majorityElement(int[] nums) {
+
+        for(int i :nums) {
+            if(count == 0) {
+                maj = i;
+                count++;
+            }
+            else {
+                int a = i == maj ? count++:count--;
+            }
+            if(count >= (nums.length >> 1) + 1)
+                return maj;
+        }
+        return maj;
+    }
+}

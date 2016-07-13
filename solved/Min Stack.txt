@@ -1,0 +1,46 @@
+public class MinStack {
+    static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    PriorityQueue<Integer> pq;
+    ListNode top;
+    /** initialize your data structure here. */
+    public MinStack() {
+        top = new ListNode(Integer.MAX_VALUE);
+        pq = new PriorityQueue<Integer>();
+    }
+    
+    public void push(int x) {
+        ListNode n = new ListNode(x);
+        n.next = top.next;
+        top.next = n;
+        pq.offer(x);
+    }
+    
+    public void pop() {
+        if(pq.peek() == top.next.val)
+            pq.poll();
+        top = top.next;
+    }
+    
+    public int top() {
+        return top.next.val;
+    }
+    
+    public int getMin() {
+        return pq.peek();
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */

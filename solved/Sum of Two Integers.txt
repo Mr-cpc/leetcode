@@ -1,0 +1,12 @@
+public class Solution {
+    public int getSum(int a, int b) {
+        int benweihe = a ^ b;
+        int carry = (a & b) << 1;
+        while(carry != 0) {
+            int t = benweihe;
+            benweihe ^= carry;
+            carry = (carry & t) << 1;
+        }
+        return benweihe;
+    }
+}
