@@ -1,0 +1,60 @@
+class MyStack {
+    Queue<Integer> a = new LinkedList<Integer>();//首先用此队列入栈
+    Queue<Integer> b = new LinkedList<Integer>();//首先用此队列出栈
+    // Push element x onto stack.
+    public void push(int x) {
+        if(!a.isEmpty() ) {
+            a.offer(x);
+            return ;
+        }
+        if(!b.isEmpty() ) {
+            b.offer(x);
+            return ;
+        }
+        a.offer(x);
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        if(!a.isEmpty() ) {
+            while(a.size() > 1) {
+               b.offer(a.poll());
+            }
+            a.poll();
+            return ; 
+        }
+        if(!b.isEmpty() ) {
+            while(b.size() > 1) {
+               a.offer(b.poll());
+            }
+            b.poll();
+            return ; 
+        }
+    }
+
+    // Get the top element.
+    public int top() {
+        if(!a.isEmpty() ) {
+            while(a.size() > 1) {
+               b.offer(a.poll());
+            }
+            int re = a.poll();
+            b.offer(re);
+            return re; 
+        }
+        if(!b.isEmpty() ) {
+            while(b.size() > 1) {
+               a.offer(b.poll());
+            }
+            int re = b.poll();
+            a.offer(re);
+            return re; 
+        }
+        return 12311;
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return b.isEmpty() && a.isEmpty();
+    }
+}

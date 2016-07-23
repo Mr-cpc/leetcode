@@ -3,7 +3,6 @@
 class PeekingIterator implements Iterator<Integer> {
     private Iterator<Integer> it;
     Integer peek;
-    boolean lastIsPeek;
 	public PeekingIterator(Iterator<Integer> iterator) {
 	    // initialize any member here.
 	    this.it = iterator;
@@ -11,7 +10,6 @@ class PeekingIterator implements Iterator<Integer> {
 
     // Returns the next element in the iteration without advancing the iterator.
 	public Integer peek() {
-	    lastIsPeek = true;
         if(peek != null) 
             return peek;
         
@@ -30,18 +28,17 @@ class PeekingIterator implements Iterator<Integer> {
 	    if(peek != null)
 	    {
 	        int tmp = peek;
-	        if(it.hasNext() )
-	            peek = it.next();
+	        peek = null;
 	        return tmp;
 	    }
 	    else {
-	            int tmp = it.next();
+	      /*      int tmp = it.next();
 	            if(it.hasNext() ){
 	                peek = it.next();
 	                    
-	            }
+	            }*/
 	        
-        return tmp;	
+        return it.next();	
 	    }
 	        
 	   
@@ -49,6 +46,6 @@ class PeekingIterator implements Iterator<Integer> {
 
 	@Override
 	public boolean hasNext() {
-	    return lastIsPeek || it.hasNext();
+	    return peek != null || it.hasNext();
 	}
 }
