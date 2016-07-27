@@ -1,7 +1,26 @@
 public class Solution {
     int[] res;
+    private int minOfThree(int a, int b ,int c) {
+        int minOfTwo = a<b?a:b;
+        return minOfTwo < c?minOfTwo:c;
+    }
     public int nthUglyNumber(int n) {
         res = new int[n];
+        res[0] = 1;
+        int f2 = 0,f3 = 0,f5 = 0;
+        for(int i = 1;i<n;i++) {
+            int min = minOfThree(res[f2]*2,res[f3]*3,res[f5]*5 );
+            res[i] = min;
+            if(res[f2]*2 == min)
+                f2++;
+            if(res[f3]*3 == min)
+                f3++;
+            if(res[f5]*5 == min)
+                f5++;                
+        }
+        return res[n-1];
+        /*
+        
         MinHeap mh = new MinHeap(3*n);
         //mh.add(1);
         int l1,l2,l3;
@@ -19,6 +38,7 @@ public class Solution {
             
         }
         return res[n-1];
+        */
     }
 }
 

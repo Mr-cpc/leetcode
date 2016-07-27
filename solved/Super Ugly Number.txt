@@ -1,0 +1,27 @@
+public class Solution {
+    int[] res;
+    PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+    private int minOfN(int f[]) {
+        for(int i:f)
+            pq.offer(i);
+        int min = pq.poll();
+        pq.clear();
+        return min;
+    }
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        res = new int[n];
+        res[0] = 1;
+        int[] index = new int[primes.length];
+        int[] chuan = new int[index.length];
+        for(int i = 1;i<n;i++) {
+            for(int j = 0;j<chuan.length;j++)
+                chuan[j] = primes[j] * res[index[j]];
+            int min = minOfN(chuan);
+            res[i] = min;
+            for(int j = 0;j<index.length;j++)
+                if(res[index[j]]*primes[j] == min)
+                    index[j]++;
+        }
+        return res[n-1];
+    }
+}
