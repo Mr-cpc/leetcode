@@ -1,0 +1,19 @@
+public class Solution {
+    PriorityQueue<Integer> pq ;
+    public int kthSmallest(int[][] matrix, int k) {
+        int line = (int) Math.sqrt(k);
+        if(line * line == k)
+            return matrix[line-1][line-1];
+        else {
+            pq = new PriorityQueue<Integer>();
+            for(int i = 0;i<line;i++) {
+                pq.offer(matrix[line][i]);
+                pq.offer(matrix[i][line]);
+            }
+            int s = k-line*line;
+            for(int i = 1;i<s;i++)
+                pq.poll();
+            return pq.poll();
+        }
+    }
+}

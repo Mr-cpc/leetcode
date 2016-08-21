@@ -1,0 +1,57 @@
+public class Solution {
+    HashMap<Character,Integer> hms;
+    HashMap<Character,Integer> hmt;
+    private boolean contain(HashMap<Character,Integer> hms,HashMap<Character,Integer> hmt) {
+        if(hms.size()<hmt.size() )
+            return false;
+        Set<Character> s = hmt.keySet();
+        Iterator<Character> it = s.iterator();
+        char c;
+        while(it.hasNext() ) {
+            c = it.next();
+            if(!hms.containsKey(c) )
+                return false;
+            if(hms.get(c) < hmt.get(c))
+                return false;
+        }
+        return true;
+    }
+    public String minWindow(String s, String t) {
+        if(s.length() < t.length() || s.equals("") || t.equals("") )
+            return "";
+        hms = new HashMap<Character,Integer>();
+        hmt = new HashMap<Character,Integer>();
+        String ans = "";
+        char[] ss = s.toCharArray(),tt = t.toCharArray();
+        for(char c: tt)
+            if(hmt.containsKey(c))
+                hmt.put(c,hmt.get(c) + 1 );
+            else
+                hmt.put(c,1);
+        int st = 0,en = st;
+        int min = Integer.MAX_VALUE;
+        int i;
+        while(st<ss.length && en<ss.length) {
+            while(!contain(hms,hmt) && en<ss.length) {
+                if(hms.containsKey(ss[en]))
+                    hms.put(ss[en],hms.get(ss[en]) + 1 );
+                else
+                    hms.put(ss[en],1);
+                en++;
+            }
+            while(contain(hms,hmt) && st<ss.length) {
+                if(en - st < min) {
+                    min = en - st;
+                    ans = new String(ss,st,en- st);
+                }
+                i = hms.get(ss[st]);
+                if(i == 1)
+                    hms.remove(ss[st]);
+                else
+                    hms.put(ss[st],--i);
+                st++;
+            }
+        }
+        return ans;
+    }
+}

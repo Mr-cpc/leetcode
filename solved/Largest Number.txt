@@ -1,0 +1,40 @@
+public class Solution {
+    String x,y;
+    private void sort(int[] a,int l,int h) {
+        if(l>=h)
+            return ;
+        int j = partition(a,l,h);
+        sort(a,l,j - 1);
+        sort(a,j + 1,h);
+    }
+    private int partition(int[] a,int l ,int h) {
+        int x = a[l];
+        while(l<h) {
+            while(l<h && more(x,a[h]) )
+                h--;
+            a[l] = a[h];
+            while(l<h && more(a[l],x) )
+                l++;
+            a[h] = a[l];
+        }
+        a[l] = x;
+        return l;
+    }
+    private boolean more(int a,int b){  //若a “大于” b，返回真
+        x = String.valueOf(a);
+        y = String.valueOf(b);
+        return ( Long.parseLong(x+y) - Long.parseLong(y+x) ) >= 0;
+    }
+    public String largestNumber(int[] nums) {
+        if(nums.length == 0)
+            return "";
+        sort(nums,0,nums.length - 1);
+        if(nums[0] == 0)
+            return "0";
+        StringBuilder ans = new StringBuilder();
+        for(int i:nums) {
+            ans.append(String.valueOf(i) );
+        }
+        return ans.toString();
+    }
+}

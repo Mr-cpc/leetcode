@@ -1,0 +1,56 @@
+﻿public class Solution {
+    List<Integer> ans;
+    private void addYiQuan(int[][] matrix,Point leftUp,Point rightDown) {
+        if(leftUp.x == rightDown.x) {
+            for(int i = leftUp.y;i<=rightDown.y;i++) {
+                ans.add(matrix[i][leftUp.x]);
+            }
+            return ;
+        }
+        if(leftUp.y == rightDown.y) {
+            for(int i = leftUp.x;i<=rightDown.x;i++) {
+                ans.add(matrix[leftUp.y][i]);
+            }
+            return ;
+        }
+        for(int i = leftUp.x;i<rightDown.x;i++) {
+            ans.add(matrix[leftUp.y][i]);
+        }
+        for(int i = leftUp.y;i<rightDown.y;i++) {
+            ans.add(matrix[i][rightDown.x]);
+        }
+        for(int i = rightDown.x;i>leftUp.x;i--) {
+            ans.add(matrix[rightDown.y][i]);
+        }
+        for(int i = rightDown.y;i>leftUp.y;i--) {
+            ans.add(matrix[i][leftUp.x]);
+        }
+    }
+    public List<Integer> spiralOrder(int[][] matrix) {
+        ans = new ArrayList<Integer>();
+        if(matrix.length == 0)
+            return ans;
+        Point lU = new Point(0,0);
+        Point rD = new Point(matrix[0].length-1,matrix.length - 1);
+        int num = (Math.min(matrix.length,matrix[0].length) + 1) >> 1;
+        for(int i = 0;i<num;i++) {
+            addYiQuan(matrix,lU,rD);
+            lU.reset(lU.x+1,lU.y+1);
+            rD.reset(rD.x-1,rD.y-1);
+        }
+        return ans;
+    }
+}
+
+class Point {
+    int x;
+    int y;
+    Point(int x,int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public void reset(int x,int y) {
+        this.x = x;
+        this.y = y;        
+    }
+}

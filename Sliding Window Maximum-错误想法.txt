@@ -1,0 +1,46 @@
+public class Solution {
+    int ans[];
+    PriorityQueue<F> pq;
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if(nums.length == 0)
+            return new int[0];
+        ans = new int[nums.length-k+1];
+        pq = new PriorityQueue<F>(new Comparator<F>(){
+            public int compare(F a ,F b) {
+                return b.num - a.num;
+            }
+        } );
+        
+        for(int i = 0;i<k;i++) 
+            pq.offer(new F(nums[i],i));
+        F max = pq.peek();
+        ans[0] = max.num;
+        
+        for(int i = k;i<nums.length;i++) {
+            if(max.idx == i-k) {
+                pq.poll();
+                pq.offer(new F(nums[i],i));
+                max = pq.peek(); 
+                ans[i-k+1] = max.num;
+                continue;
+            }
+            if(nums[i]<max.num )
+                ans[i-k+1] = max.num;
+            else {
+                pq.offer(new F(nums[i],i));
+                ans[i-k+1] = nums[i];
+                max = new F(nums[i],i);
+            }
+        }
+        return ans;
+    }
+}
+
+class F {
+    int num;
+    int idx;
+    F(int num,int idx) {
+        this.num = num;
+        this.idx = idx;
+    }
+}

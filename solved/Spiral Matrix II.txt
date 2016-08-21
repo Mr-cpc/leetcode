@@ -1,0 +1,54 @@
+public class Solution {
+    int[][] ans;
+    int x = 1;
+    private void generateYiQuan(int[][] ans,Point leftUp,Point rightDown) {
+        /*
+        if(leftUp.x>rightDown.x || leftUp.y<rightDown.y)
+            return;*/
+        if(leftUp.x == rightDown.x) {
+            ans[leftUp.y][leftUp.x] = this.x++;
+            return ;
+        }
+        for(int i = leftUp.x;i<rightDown.x;i++) {
+            ans[leftUp.y][i] = this.x++;
+        }
+        for(int i = leftUp.y;i<rightDown.y;i++) {
+            ans[i][rightDown.x] = this.x++;
+        }
+        for(int i = rightDown.x;i>leftUp.x;i--) {
+            ans[rightDown.y][i] = this.x++;
+        }
+        for(int i = rightDown.y;i>leftUp.y;i--) {
+            ans[i][leftUp.x] = this.x++;
+        }
+    }
+    public int[][] generateMatrix(int n) {
+        ans = new int[n][n];
+        Point lU = new Point(0,0);
+        Point rD = new Point(n-1,n-1);
+        int num = (n + 1) >> 1;
+        for(int i = 0;i<num;i++) {
+            generateYiQuan(ans,lU,rD);
+            lU.reset(lU.x+1,lU.y+1);
+            rD.reset(rD.x-1,rD.y-1);
+        }
+        return ans;
+            
+    }
+}
+
+
+
+
+class Point {
+    int x;
+    int y;
+    Point(int x,int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public void reset(int x,int y) {
+        this.x = x;
+        this.y = y;        
+    }
+}

@@ -1,0 +1,23 @@
+public class Solution {
+    HashMap<Integer,Integer> hm;
+    HashSet<Integer> hs;
+    int a;
+    public int singleNumber(int[] nums) {
+        hm = new HashMap<Integer,Integer>();
+        hs = new HashSet<Integer>();
+        for(int i : nums) {
+            if(hs.contains(i))
+                continue;
+            if(hm.containsKey(i)) {
+                a = hm.get(i);
+                if(a == 1)
+                hm.remove(i);
+                hs.add(i);
+            }
+            else
+                hm.put(i,1);
+        }
+        Iterator<Integer> it = hm.keySet().iterator();
+        return it.next();
+    }
+}

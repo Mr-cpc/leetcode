@@ -1,0 +1,47 @@
+public class Solution {
+    int la,lb;
+    char[] ans;
+    public String addBinary(String a, String b) {
+        la = a.length();
+        lb = b.length();
+        int sum = 0,carry = 0;
+        if(la<lb) {
+            ans = new char[lb+1];
+            for(int i = 1;i<=la;i++) {
+                sum = (a.charAt(la-i) - '0') + (b.charAt(lb-i) - '0') + carry;
+                ans[ans.length-i] = (char)(sum % 2 + '0');
+                carry = sum >= 2?1:0;
+            }
+            for(int i = la+1;i<=lb;i++) {
+                sum = (b.charAt(lb-i) - '0') + carry;
+                ans[ans.length-i] = (char)(sum % 2 + '0');
+                carry = sum >= 2?1:0;
+            }
+            if(carry == 1) {
+                ans[0] = '1';
+                return new String(ans);
+            }
+            else
+                return new String(ans,1,ans.length - 1);
+        }
+        else {
+            ans = new char[la+1];
+            for(int i = 1;i<=lb;i++) {
+                sum = (a.charAt(la-i) - '0') + (b.charAt(lb-i) - '0') + carry;
+                ans[ans.length-i] = (char)(sum % 2 + '0');
+                carry = sum >= 2?1:0;
+            }
+            for(int i = lb+1;i<=la;i++) {
+                sum = (a.charAt(la-i) - '0') + carry;
+                ans[ans.length-i] = (char)(sum % 2 + '0');
+                carry = sum >= 2?1:0;
+            }
+            if(carry == 1) {
+                ans[0] = '1';
+                return new String(ans);
+            }
+            else
+                return new String(ans,1,ans.length - 1);            
+        }
+    }
+}
