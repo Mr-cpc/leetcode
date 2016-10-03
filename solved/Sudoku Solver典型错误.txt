@@ -1,0 +1,52 @@
+public class Solution {
+    char[][] board;
+    char itoa(int i) {
+        return (char) (i+'0');
+    }
+    private boolean isValid(int row,int col,char num) {
+        for(int i = 0;i<9;i++) {
+            if(board[row][i] == num || board[i][col] == num || board[3*(row/3)+i/3][3*(col/3)+i%3]== num) 
+                return false;
+        }
+        /*
+        int l = row / 3,c = col / 3;
+        for(int i = 0;i<3;i++) {
+            for(int j = 0;j<3;j++) {
+                if(board[i+l*3][j+c*3] == num) {
+                    return false;
+                }
+            }
+        }
+        */
+        return true;
+    }
+    private void backtrack(int row,int col) {
+        if(row == 8 && col == 9)
+            return ;
+
+        else {
+            if(col == 9) 
+                backtrack(1+row,0);
+            else {
+                if(board[row][col] != '.')
+                    backtrack(row,1+col);
+                else {
+                    for(int i = 1;i<=9;i++) {
+                        if(isValid(row,col,itoa(i))) {
+                            board[row][col] = itoa(i);
+                            backtrack(row,col+1);
+                           // board[row][col] = '.';
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    public void solveSudoku(char[][] board) {
+        if(board.length == 0)
+            return ;
+        this.board = board;
+        backtrack(0,0);
+    }
+}

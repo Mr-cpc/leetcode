@@ -1,0 +1,27 @@
+public class Solution {
+    TreeMap<Integer,Character> tm;
+    HashMap<Character,Integer> hm;
+    HashSet<Character> hs;
+    char[] cc;
+    public int firstUniqChar(String s) {
+        if(s.equals("") )
+            return -1;
+        tm = new TreeMap<Integer,Character>();
+        hm = new HashMap<Character,Integer>();
+        hs = new HashSet<Character>();
+        cc = s.toCharArray() ;
+        for(int i = 0;i<cc.length;i++) {
+            if(!hs.contains(cc[i])) {
+                hs.add(cc[i]);
+                tm.put(i,cc[i]);
+                hm.put(cc[i],i);
+            }
+            else {
+                tm.remove(hm.get(cc[i]));
+            }
+        }
+        if(tm.size() == 0 )
+            return -1;
+        return tm.keySet().iterator().next();
+    }
+}

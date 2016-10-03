@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    int ans;
+    private boolean isLL(TreeNode par,TreeNode son){
+        
+        if(son == null || par == null)
+            return false;
+        else return par.left == son && son.left == null && son.right == null;
+    }//判断是不是左叶子
+    private void visit(TreeNode par,TreeNode son){
+        if(isLL(par,son) )
+            ans += son.val;
+        
+    }
+    public int sumOfLeftLeaves(TreeNode root) {
+        //if(root == null || root.left)
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        TreeNode cur;
+        while(root != null || !s.isEmpty() ) {
+            while(root != null) {
+                s.push(root);
+                root = root.left;
+            }
+            cur = s.pop();
+            if(!s.isEmpty() )
+                visit(s.peek(),cur );
+            root = cur.right;
+        }
+        return ans;
+    }
+}
