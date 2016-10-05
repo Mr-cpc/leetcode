@@ -1,0 +1,36 @@
+public class Solution {
+    HashMap<Character,Integer> hm;
+    int ans;
+    char[] str;
+    boolean f;
+    public int longestPalindrome(String s) {
+        if(s.equals("") )
+            return 0;
+        hm = new HashMap<Character,Integer>();
+        str = s.toCharArray();
+        for(int i = 0;i<str.length;i++) {
+            if(hm.containsKey(str[i]) )
+                hm.put(str[i],hm.get(str[i]) + 1 );
+            else 
+                hm.put(str[i],1);
+        }
+        Iterator<Map.Entry<Character,Integer>> it = hm.entrySet().iterator();
+        Map.Entry<Character,Integer> c;
+        int num;
+        while(it.hasNext() ){
+            c = it.next();
+            num = c.getValue();
+            if(num % 2 == 0)
+                ans += num;
+            else {
+                if(num > 2) {
+                    ans += (num - 1);
+                    f = true;
+                }
+                else
+                    f = true;
+            }
+        }
+        return f?++ans:ans;
+    }
+}

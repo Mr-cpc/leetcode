@@ -1,0 +1,21 @@
+public class Solution {
+    int[] nums;
+    List<Integer> list;
+    public Solution(int[] nums) {
+        this.nums = nums;
+    }
+    
+    public int pick(int target) {
+        list = new ArrayList<Integer>();
+        for(int i = 0;i<this.nums.length;i++)
+            if(target == nums[i])
+                list.add(i);
+        return list.get((int) (Math.random() * list.size()));
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int param_1 = obj.pick(target);
+ */
