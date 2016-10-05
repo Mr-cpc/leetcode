@@ -1,0 +1,75 @@
+public class Solution {
+    int[] data;
+    int newStart;
+    /**
+    用于判断一个正int数的第idx位是否为1
+    */
+    private boolean theBitIsOne(int num,int idx) {
+        return ((num >> idx) & 1) == 1;
+    }
+    /**
+    用于判断data[]中从start开始的数是否utf-8有效，并修改newStart的值为 newStart += len(start开始的utf-8字符的总字节数)
+    */
+    private boolean valid(int start) {
+        if(!theBitIsOne(data[start],7)) {
+            ++this.newStart;
+            return true;
+        }
+        else {
+            if(start + 1 < data.length) {
+                if(theBitIsOne(data[start],6)) {
+                    if(!theBitIsOne(data[start],5)) {
+                        if(theBitIsOne(data[start+1],6)) 
+                            return false;
+                        else {
+                            this.newStart += 2;
+                            return true;
+                        }
+                    }
+                    else {
+                        if(!theBitIsOne(data[start],4)) {
+                            if(start + 2 < data.length) {
+                                if(!theBitIsOne(data[start+1],6) && theBitIsOne(data[start+1],7) && theBitIsOne(data[start+2],7) && !theBitIsOne(data[start+2],6)) {
+                                    this.newStart += 3;
+                                    return true;
+                                }
+                                else
+                                    return false;
+                            }
+                            else
+                                return false;
+                        }
+                        else {
+                            if(start + 3 < data.length) {
+                                if(!theBitIsOne(data[start+1],6) && !theBitIsOne(data[start+2],6) && !theBitIsOne(data[start+3],6)) {
+                                    this.newStart += 4;
+                                    return true;
+                                }
+                                else
+                                    return false;                                
+                            }
+                            else
+                                return false;
+                        }
+                    }
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+    }
+    public boolean validUtf8(int[] data) {
+        if(data.length == 0)
+            return true;
+        this.data = data;
+        while(newStart<data.length) {
+            if(valid(newStart))
+                continue;
+            else
+                return false;
+        }
+        return true;
+    }
+}
