@@ -1,0 +1,17 @@
+public class Solution {
+    char[] ss,tt;
+    public boolean isSubsequence(String s, String t) {
+        ss = s.toCharArray();
+        tt = t.toCharArray();
+        int idxs = 0,idxt = 0;
+        while(idxs<ss.length && idxt<tt.length) {
+            if(ss[idxs] == tt[idxt]) {
+                ++idxs;
+                ++idxt;
+            }
+            else 
+                ++idxt;
+        }
+        return idxs == ss.length;
+    }
+}
