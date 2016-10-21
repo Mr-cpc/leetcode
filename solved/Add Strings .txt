@@ -1,0 +1,24 @@
+public class Solution {
+    char[] ans;
+    private String add(String more ,String less){
+        char[] m = more.toCharArray();
+        char[] l = less.toCharArray();
+        ans = new char[m.length+1];
+        int sum = 0,carry = 0;
+        for(int i = 1;i<=l.length;i++) {
+            sum = (m[m.length-i] - '0') + (l[l.length-i] - '0') + carry;
+            ans[ans.length-i] = (char)((sum % 10)+'0');
+            carry = sum / 10;
+        }
+        for(int i = l.length+1;i<ans.length;i++) {
+            sum = (m[m.length-i] - '0') + carry;
+            ans[ans.length-i] = (char)((sum % 10)+'0');
+            carry = sum / 10;
+        }
+        ans[0] = (char)(carry+'0');
+        return ans[0] =='0'?new String(ans,1,ans.length-1):new String(ans);
+    }
+    public String addStrings(String num1, String num2) {
+        return num1.length()>num2.length()?add(num1,num2):add(num2,num1);
+    }
+}
