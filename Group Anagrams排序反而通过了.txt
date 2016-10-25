@@ -1,0 +1,26 @@
+import java.util.Collection;
+public class Solution {
+    char[] cc;
+    List<List<String>> ans;
+    HashMap<String,List<String>> map;
+    public List<List<String>> groupAnagrams(String[] strs) {
+        ans = new ArrayList<List<String>>();
+        map = new  HashMap<String,List<String>>();
+        for(String str : strs) {
+            cc = str.toCharArray();
+            Arrays.sort(cc);
+            String key = new String(cc);
+            if(map.containsKey(key)) {
+                map.get(key).add(str);
+            }
+            else {
+                List<String> l = new ArrayList<String>();
+                map.put(key,l);
+                l.add(str);
+            }    
+        }
+        Collection<List<String>> s = map.values();
+        ans.addAll(s);
+        return ans;
+    }
+}
