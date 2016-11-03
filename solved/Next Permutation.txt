@@ -1,0 +1,40 @@
+public class Solution {
+    int tmp;
+    private void swap(int[] a,int i,int j) {
+        tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;        
+    }
+    private void reverse(int[] a,int st,int end) {
+        int b =  st + ((end - st) >> 1);
+        for(int i = st;i<=b;i++) 
+            swap(a,i,end - i + st);
+    }
+    private int findMinIdx(int[] a,int st,int cmp) {
+        int min = Integer.MAX_VALUE;
+        int idx = 0;
+        for(int i = a.length - 1;i>=st;i--) {             //为什么从后往前找就ac，从前往后找就不对呢？还没想明白。。。。
+            if(a[i]>cmp && a[i] < min) {
+                idx = i;
+                min = a[i];
+            }
+        }
+        return idx;
+    }
+    public void nextPermutation(int[] nums) {
+        int i;
+        for(i = nums.length - 1;i>0;i--) {
+            if(nums[i-1]<nums[i])
+                break;
+        }
+        if(i == 0) {
+            reverse(nums,0,nums.length - 1);
+            return ;
+        }
+        else {
+            int idx = findMinIdx(nums,i,nums[i-1]);
+            swap(nums,i-1,idx);
+            reverse(nums,i,nums.length - 1);
+        }
+    }
+}

@@ -1,0 +1,21 @@
+public class Solution {
+    int longestLen[];
+    int ans = 1;
+    public int lengthOfLIS(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+        longestLen = new int[nums.length];
+        for(int i = 0;i<nums.length;i++)
+            longestLen[i] = 1;//这里很重要，如果初始化为0那么答案就总少1，以每个单独的数字为子序列的长度当然至少是1而不是0啦
+        for(int i = 1;i<nums.length;i++) {
+            for(int j = 0;j<i;j++) {
+                if(nums[i]>nums[j]) {
+                    longestLen[i] = Math.max(longestLen[i],longestLen[j] + 1);
+                }
+            }
+            ans = Math.max(ans,longestLen[i]);
+        }
+        //return longestLen[nums.length - 1];     ！！！真tm蠢到极点，还半天找不到错哪/(ㄒoㄒ)/~~
+        return ans;
+    }
+}

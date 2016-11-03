@@ -1,0 +1,24 @@
+public class Solution {
+    long max = Long.MIN_VALUE,sec = Long.MIN_VALUE,thi = Long.MIN_VALUE;
+    public int thirdMax(int[] nums) {
+        for(int i : nums) {
+            if(i>max) {
+                thi = sec;
+                sec = max;
+                max = i;
+            }
+            else {
+                if(i>sec && i<max) {
+                    thi = sec;
+                    sec = i;
+                }
+                else {
+                    if(i>thi &&i < sec)  {
+                        thi = i;
+                    }
+                }
+            }
+        }
+        return thi == Long.MIN_VALUE?(int) max:(int)thi;
+    }
+}
