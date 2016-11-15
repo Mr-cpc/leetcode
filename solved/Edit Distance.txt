@@ -1,0 +1,22 @@
+public class Solution {
+    int[][] asist;
+    public int minDistance(String word1, String word2) {
+        if(word1.length() == 0)
+            return word2.length();
+        if(word2.length() == 0)
+            return word1.length();            
+        asist= new int[word1.length()+1][word2.length()+1];
+        for(int i = 0;i<asist.length;i++)
+            asist[i][0] = i;
+        for(int i = 0;i<asist[0].length;i++)
+            asist[0][i] = i;
+        for(int i = 1;i<asist.length;i++)
+            for(int j = 1;j<asist[0].length;j++) {
+                if(word1.charAt(i-1) == word2.charAt(j-1) )
+                    asist[i][j] = asist[i-1][j-1];
+                else
+                    asist[i][j] = Math.min(Math.min(asist[i-1][j],asist[i][j-1]),asist[i-1][j-1]) + 1;
+            }
+        return asist[asist.length-1][asist[0].length-1];
+    }
+}
