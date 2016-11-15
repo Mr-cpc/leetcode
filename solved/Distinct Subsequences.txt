@@ -1,0 +1,16 @@
+public class Solution {
+    int[][] asist;
+    public int numDistinct(String s, String t) {
+        asist = new int[s.length()+1][t.length()+1];
+        for(int i = 0;i<asist.length;i++)
+            asist[i][0] = 1;
+        for(int i = 1;i<asist.length;i++)
+            for(int j = 1;j<asist[0].length;j++) {
+                if(s.charAt(i-1) != t.charAt(j-1) )
+                    asist[i][j] = asist[i-1][j];
+                else
+                    asist[i][j] = asist[i-1][j-1] + asist[i-1][j];
+            }
+        return asist[s.length()][t.length()];
+    }
+}
