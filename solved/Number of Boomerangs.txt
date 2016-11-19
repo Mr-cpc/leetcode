@@ -1,0 +1,64 @@
+public class Solution {
+    int[] dis;
+    private int distance(int[] a,int[] b) {
+        return (a[0]-b[0]) * (a[0]-b[0]) + (a[1]-b[1]) * (a[1]-b[1]);
+    }
+    public int numberOfBoomerangs(int[][] points) {
+        int ans = 0 ;
+        dis = new int[points.length];
+        
+        for(int i = 0;i<points.length;i++) {
+            for(int j = 0;j<points.length;j++) {
+                dis[j] = distance(points[i],points[j]);
+            }
+            dis[i] = -1;
+            Map<Integer,Integer> m = new HashMap<Integer,Integer>();
+            for(int k = 0;k<points.length;k++)
+                if(m.containsKey(dis[k]) )
+                    m.put(dis[k],m.get(dis[k])+1 );
+                else
+                    m.put(dis[k],1);
+            Iterator<Integer> it = m.values().iterator();
+            int f;
+            while(it.hasNext() ) {
+                f = it.next();
+                if(f>0)
+                ans += (f - 1) * f;
+            }
+        }
+        return ans;
+    }
+}
+
+/*       这个和上面其实速度差不多，并没有快很多，但是空间节省了
+public class Solution {
+    //int[] dis;
+    private int distance(int[] a,int[] b) {
+        return (a[0]-b[0]) * (a[0]-b[0]) + (a[1]-b[1]) * (a[1]-b[1]);
+    }
+    public int numberOfBoomerangs(int[][] points) {
+        int ans = 0 ;
+       // dis = new int[points.length];
+        int dis;
+        for(int i = 0;i<points.length;i++) {
+            Map<Integer,Integer> m = new HashMap<Integer,Integer>();
+            for(int j = 0;j<points.length;j++) {
+                if(i != j) {
+                    dis = distance(points[i],points[j]);
+                    if(m.containsKey(dis) )
+                        m.put(dis,m.get(dis)+1 );
+                    else
+                        m.put(dis,1);  
+                }
+            }
+            Iterator<Integer> it = m.values().iterator();
+            int f;
+            while(it.hasNext() ) {
+                f = it.next();
+                ans += (f - 1) * f;
+            }
+        }
+        return ans;
+    }
+}
+*/

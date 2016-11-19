@@ -1,0 +1,26 @@
+public class Solution {
+    public boolean find132pattern(int[] nums) {
+        if(nums.length<=2)
+            return false;
+        for(int i = 1;i<nums.length-1;i++) {
+            int min = findLess(nums,i),max = findGreater(nums,i);
+            if(min != Integer.MAX_VALUE && max != Integer.MIN_VALUE && min < max)
+                return true;
+        }
+        return false;
+    }
+    private int findLess(int[] arr,int idx) {
+        int min = Integer.MAX_VALUE;
+        for(int i = 0;i<idx;i++)
+            if(arr[i] < arr[idx])
+                min = Math.min(arr[i],min);
+        return min;
+    }
+    private int findGreater(int[] arr,int idx) {
+        int max = Integer.MIN_VALUE;
+        for(int i = idx+1;i<arr.length;i++)
+            if(arr[i] < arr[idx])
+                max = Math.max(arr[i],max);
+        return max;
+    }
+}

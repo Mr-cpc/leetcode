@@ -1,0 +1,51 @@
+public class Solution {
+    char tmp;
+    char[] nums;
+    private void swap(char[] a,int i,int j) {
+        tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;        
+    }
+    private void reverse(char[] a,int st,int end) {
+        int b =  st + ((end - st) >> 1);
+        for(int i = st;i<=b;i++) 
+            swap(a,i,end - i + st);
+    }
+    private int findMinIdx(char[] a,int st,int cmp) {
+        int min = Integer.MAX_VALUE;
+        int idx = 0;
+        for(int i = a.length - 1;i>=st;i--) {            
+            if(a[i]>cmp && a[i] < min) {
+                idx = i;
+                min = a[i];
+            }
+        }
+        return idx;
+    }
+    public void nextPermutation(char[] nums) {
+        int i;
+        for(i = nums.length - 1;i>0;i--) {
+            if(nums[i-1]<nums[i])
+                break;
+        }
+        if(i == 0) {
+            reverse(nums,0,nums.length - 1);
+            return ;
+        }
+        else {
+            int idx = findMinIdx(nums,i,nums[i-1]);
+            swap(nums,i-1,idx);
+            reverse(nums,i,nums.length - 1);
+        }
+    }
+    public String getPermutation(int n, int k) {
+        nums = new char[n];
+        for(int i = 0;i<n;i++)
+            nums[i] = (char)(i+1+'0');
+        while(k>1) {
+            nextPermutation(nums);
+            --k;
+        }
+        return new String(nums);
+    }
+}

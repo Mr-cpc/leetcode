@@ -1,0 +1,18 @@
+public class Solution {
+    int ans = 1;
+    public int removeDuplicates(int[] nums) {
+        boolean f = true;
+        for(int i = 1;i<nums.length;i++) {
+            if(nums[i] != nums[i-1]) {
+                nums[ans++] = nums[i];
+                f = true;
+            }
+            else {
+                if(f)
+                    nums[ans++] = nums[i];
+                    f = false;
+            }
+        }
+        return ans;
+    }
+}

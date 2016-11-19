@@ -1,0 +1,39 @@
+public class Solution {
+    /*
+    void sort(int[][] a,int st,int en) {
+        if(st >= en)
+            return ;
+        int j = partition(a,st,en);
+        sort(a,st,j-1);
+        sort(a,j+1,en);
+    }
+    int partition(int[][] a,int st,int en) {
+        int[] x = a[st];
+        while(st < en) {
+            while(st < en && a[en][1] >= x[1])
+                --en;
+            a[st] = a[en];
+            while(st<en && a[st][1]<=x[1])
+                ++st;
+            a[en] = a[st];
+        }
+        a[st] = x;
+        return st;
+    }*/
+    public int findMinArrowShots(int[][] points) {
+        if(points.length < 2)
+            return points.length;
+        //sort(points,0,points.length-1);  自己写的快排对于已经是升序的情况没有优化，对于test case溢出了。。。幸好有lambda可以用Arrays.sort()
+        Arrays.sort(points,(int[] x,int[] y) -> x[1]-y[1]);
+        int ans = 1,sel = points[0][1];
+        for(int i = 1;i<points.length;i++) {
+            if(sel>=points[i][0] && sel<=points[i][1])
+                continue;
+            else {
+                sel = points[i][1];
+                ++ans;
+            }
+        }
+        return ans;
+    }
+}

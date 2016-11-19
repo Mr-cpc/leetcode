@@ -1,0 +1,29 @@
+public class Solution {
+    /*
+    int pow(int a,int b) {
+        int ans = 1;
+        for(int i = 0;i<b;i++)
+            ans *= a;
+        return ans;
+    }*/
+    int pow(int a,int b) {
+        if(b == 0)
+            return 1;
+        int half = b >> 1;
+        int ans = pow(a,half);
+        if((half << 1) == b)
+            return ans * ans;
+        else
+            return ans * ans * a;
+    }
+    public int titleToNumber(String s) {
+        int ans = 0;
+        Map<Character,Integer> m = new HashMap<Character,Integer>();
+        for(int i = 0;i<26;i++)
+            m.put((char)(i+'A') ,i+1);
+        for(int i = 0,len = s.length();i<len;i++) {
+            ans += m.get(s.charAt(i) ) * pow(26,(len- 1-i));
+        }
+        return ans;
+    }
+}

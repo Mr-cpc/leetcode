@@ -1,0 +1,36 @@
+public class Solution {
+    PriorityQueue<Pair> pq;
+    List<int[]> ans;
+    public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        int kk = nums1.length * nums2.length >= k?k:nums1.length * nums2.length;
+        ans = new ArrayList<int[]>();
+        pq = new PriorityQueue<Pair>();
+        for(int num1:nums1) {
+            for(int num2:nums2) {
+                pq.offer(new Pair(num1,num2));
+            }
+        }
+        for(int i = 0;i<kk;i++) {
+            int[] a = new int[2];
+            Pair p = pq.poll();
+            a[0] = p.u;
+            a[1] = p.v;
+            ans.add(a);
+        }
+        return ans;
+    }
+}
+
+class Pair implements Comparable<Pair>{
+    int u,v;
+    public int sum() {
+        return u + v;
+    }
+    Pair(int u,int v) {
+        this.u = u;
+        this.v = v;
+    }
+    public int compareTo(Pair pair) {
+        return this.sum() - pair.sum();
+    }
+}

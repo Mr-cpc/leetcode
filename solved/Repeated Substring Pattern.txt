@@ -1,0 +1,23 @@
+public class Solution {
+    int len;
+    public boolean repeatedSubstringPattern(String str) {
+        len = str.length();
+        for(int i = 1;i<=(len >> 1);i++ ) {
+            if(len % i != 0)
+                continue;
+            else {
+                int st = i;
+                String p = str.substring(0,i);
+                while(st < len) {
+                    if(str.substring(st,st + i).equals(p) )
+                        st += i;
+                    else
+                        break;
+                }
+                if(st == len)
+                    return true;
+            }
+        }
+        return false;
+    }
+}

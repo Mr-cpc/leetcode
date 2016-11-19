@@ -1,0 +1,18 @@
+public class Solution {
+    Set<List<Integer>> ans;
+    List<Integer> l;
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        ans = new HashSet<List<Integer>>();
+        int a = 1<<nums.length;
+        Arrays.sort(nums);
+        for(int i = 0;i<a;i++) {
+            l = new ArrayList<Integer>();
+            for(int j = 0;j<nums.length;j++) {
+                if(((i >> j) & 1)== 1)
+                    l.add(nums[j]);
+            }
+            ans.add(l);
+        }
+        return new ArrayList<List<Integer>>(ans);
+    }
+}
