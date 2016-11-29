@@ -1,0 +1,59 @@
+public class Solution {
+    char c[];
+    
+    private int huiwen(char[] c,int center) {
+        int i = center - 1,j = center + 1;
+        int ans = 1;
+        while(i>=0 && j<c.length) {
+            if(c[i] == c[j]) {
+                ans += 2;
+                i--;
+                j++;
+            }
+            else
+                break;
+        }
+        return ans;
+    }
+    private int huiwen(char[] c,int center1,int center2) {
+        int i = center1,j = center2;
+        int ans = 0;
+        while(i>=0 && j<c.length) {
+            if(c[i] == c[j]) {
+                ans += 2;
+                i--;
+                j++;
+            }
+            else
+                break;
+        }
+        return ans;
+    }
+    public String longestPalindrome(String s) {
+        c = s.toCharArray();
+        int len1 = 0,len2 = 0;
+        int center = 0,center1 = 0,center2 = 0;
+        for(int i = 0;i<c.length;i++) {
+            int tmp = huiwen(c,i);
+            if(tmp > len1) {
+                len1 = tmp;
+                center = i;
+            }
+        }
+        for(int i = 0;i<c.length-1;i++) {
+            int tmp = huiwen(c,i,i+1);
+            if(tmp > len2) {
+                len2 = tmp;
+                center1 = i;
+                center2 = i+1;
+            }
+        }
+        if(len1>len2) {
+            return new String(c,center-len1/2,len1);
+        }
+        else {
+            return new String(c,1+center1-len2/2,len2);
+        }
+        
+    }
+}
