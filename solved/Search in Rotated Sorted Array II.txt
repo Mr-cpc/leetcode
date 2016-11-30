@@ -1,0 +1,27 @@
+public class Solution {
+    int mid;
+    private boolean search(int[] nums,int st,int en,int target) {
+        while(st <= en) {
+            mid = st + ((en - st) >> 1);
+            if(nums[mid] == target)
+                return true;
+            else {
+                if(target > nums[mid])
+                    st = mid + 1;
+                else
+                    en = mid - 1;
+            }
+        }
+        return false;
+    }
+    public boolean search(int[] nums, int target) {
+        int i;
+        for(i = 0;i<nums.length-1;i++) {
+            if(nums[i] <= nums[i+1])
+                continue;
+            else
+                break;
+        }
+        return search(nums,0,i,target) || search(nums,i+1,nums.length - 1,target);
+    }
+}

@@ -1,0 +1,37 @@
+public class Solution {
+    char[] str;
+    int[] asist;
+    public String longestPalindrome(String s) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0,len=s.length();i<len;i++) {
+            sb.append('#');
+            sb.append(s.charAt(i) );
+        }
+        sb.append('#');
+        str = sb.toString().toCharArray();
+        int cent = 0,maxRight = 0,maxCent = 0,maxLen = Integer.MIN_VALUE;
+        asist = new int[str.length];
+        for(int i = 0;i<str.length;i++) {
+            if(i<maxRight) {
+                asist[i] = Math.min(maxRight - i,asist[2 * cent - i]);
+            }
+            else
+                asist[i] = 1;
+            while(i+asist[i] < asist.length && i-asist[i] >= 0 && str[asist[i] + i] == str[i-asist[i]])
+                asist[i]++;
+            if(i+asist[i] - 1 > maxRight) {
+                maxRight = i+asist[i] - 1;
+                cent = i;
+            }
+            if(asist[i] > maxLen) {
+                maxLen = asist[i];
+                maxCent = i;
+            }
+        }
+        sb.delete(0,sb.length());
+        for(int i = maxCent - maxLen + 1;i<maxCent+maxLen-1;i++)
+            if(str[i] != '#')
+                sb.append(str[i]);
+        return sb.toString();
+    }
+}
