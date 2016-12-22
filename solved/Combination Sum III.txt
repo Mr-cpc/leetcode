@@ -1,0 +1,23 @@
+public class Solution {
+    int k;
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        this.k = k;
+        List<List<Integer>> ans = new ArrayList<>();
+        p(n,ans,new ArrayList<>(),1);
+        return ans;
+    }
+    public void p(int n,List<List<Integer>> ans,List<Integer> l,int st) {
+        if(n == 0 && l.size() == k) {
+            ans.add(l);
+        }
+        if(n < 0 || l.size() > k)
+            return ;
+        else {
+            for(int i = st;i<10;i++) {
+                l.add(i);
+                p(n-i,ans,new ArrayList<>(l),i+1);
+                l.remove(l.size()-1);
+            }
+        }
+    }
+}
