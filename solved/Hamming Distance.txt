@@ -1,0 +1,10 @@
+public class Solution {
+    public int hammingDistance(int x, int y) {
+        int ans = 0,tmp = x ^ y,k=0;
+        while((tmp >> k) != 0) {
+            ans +=( tmp >> k) & 1;
+            ++k;
+        }
+        return ans;        
+    }
+}
