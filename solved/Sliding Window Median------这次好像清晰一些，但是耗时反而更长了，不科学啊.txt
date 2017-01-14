@@ -1,0 +1,48 @@
+public class Solution {
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        if(nums.length == 0)
+            return new double[0];
+        double ans[] = new double[nums.length-k+1];
+        int i = 0,j;
+        Median me = new Median(k);
+        for(j = 0;j<k-1;j++)
+            me.add(nums[j]);
+        while(j<nums.length) {
+            me.add(nums[j++]);
+            ans[j-k] = me.getMedian();
+            me.remove(new Integer(nums[i++]) );
+        }
+        return ans;
+    }
+}
+
+class Median {
+    int k;
+    List<Integer> l;
+    Median(int k) {
+        l = new ArrayList<>(k);
+        this.k = k;
+    }
+    void add(int num) {
+        if(l.size() == 0)
+            l.add(num);
+        else {
+            l.add(num);
+            for(int i = l.size()-1;i>0;i-- ) {
+                if(l.get(i) < l.get(i-1) )
+                    Collections.swap(l,i,i-1);
+            }
+        }
+    }
+    void remove(Integer num) {
+        l.remove(num);
+    }
+    double getMedian() {
+        if(k % 2 == 0) {
+            return ((double)l.get(k >> 1) + (double)l.get((k>>1)-1))/2;
+        }
+        else {
+            return (double)l.get(k >> 1);
+        }
+    }
+}

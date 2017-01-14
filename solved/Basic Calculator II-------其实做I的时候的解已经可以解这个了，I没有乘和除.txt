@@ -1,0 +1,92 @@
+public class Solution {
+    static Set<Character> op;
+    static Set<String> set;
+    static Map<Character,Integer> level;
+    static  {
+        op = new HashSet<>();
+        level = new HashMap<Character,Integer>();
+        op.add('+');
+        op.add('-');
+        op.add('*');
+        op.add('/');
+        set = new HashSet<>();
+        set.add("+");
+        set.add("-");
+        set.add("*");
+        set.add("/");
+        
+        level.put('+',0);
+        level.put('-',0);
+        level.put('*',1);
+        level.put('/',1);
+        level.put('#',-1);
+    }
+    public int evalRPN(List<String> tokens) {
+        Stack<String> s = new Stack<>();
+        for(String str:tokens) {
+            if(!set.contains(str))
+                s.push(str);
+            else {
+                int a = Integer.parseInt(s.pop()),b = Integer.parseInt(s.pop());
+                switch (str) {
+                    case "+":
+                        s.push(String.valueOf(b+a) );break;
+                    case "-":
+                        s.push(String.valueOf(b-a) );break;
+                    case "*":
+                        s.push(String.valueOf(b*a) );break;
+                    case "/":
+                        s.push(String.valueOf(b/a));
+                }
+                
+            }
+        }
+        return Integer.parseInt(s.pop() );
+    }
+    public int calculate(String s) {
+        char[] str = s.toCharArray();
+        Stack<Character> not = new Stack<>();
+        not.push('#');
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ;i<str.length;i++) {
+            if(str[i] == ' ')
+                continue;
+            else {
+                if(op.contains(str[i])) {
+                    if( not.peek()=='(' || level.get(str[i]) > level.get(not.peek()))
+                        not.push(str[i]);
+                    else {
+                        while(not.peek() != '#' && not.peek() != '(' && level.get(str[i]) <= level.get(not.peek()) ) {
+                            ans.add(String.valueOf(not.pop()));
+                        }
+                        not.push(str[i]);
+                    }
+                }
+                else {
+                    if(str[i] == '(')
+                        not.push(str[i]);
+                    else {
+                        if(str[i] == ')') {
+                            while(not.peek() != '(')
+                                ans.add(String.valueOf(not.pop()));
+                            not.pop();
+                        }
+                        else {
+                            sb.append(str[i]);
+                            while(i != str.length-1 && Character.isDigit(str[i+1]))
+                                sb.append(str[++i]);
+                            ans.add(sb.toString() );
+                            sb.delete(0,sb.length() );
+                        }
+                    }
+                }
+
+            }
+        }
+        while(not.peek()!='#')
+            ans.add(String.valueOf(not.pop()));
+        // not.pop();
+        return evalRPN(ans);
+    }
+}

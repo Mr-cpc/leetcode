@@ -1,0 +1,125 @@
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    TreeNode root;
+    private TreeNode[] search(int key) {
+        TreeNode[] res = {this.root,null};
+        while(res[0] != null && res[0].val != key) {
+            res[1] = res[0];
+            if(key < res[0].val)
+                res[0] = res[0].left;
+            else
+                res[0] = res[0].right;
+        }
+        return res;
+    }
+    private boolean isLeaf(TreeNode root) {
+        return root.right == null && root.left == null;
+    }
+    private boolean hasOnlyLeft(TreeNode root) {
+        return root.right == null && root.left != null;
+    }
+    private boolean hasOnlyRight(TreeNode root) {
+        return root.right != null && root.left == null;
+    }
+    private TreeNode[] findMax(TreeNode root) {
+        TreeNode[] res = {root,null};
+        while(res[0].right != null) {
+            res[1] = res[0];
+            res[0] = res[0].right;
+        }
+        return res;
+    }
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null)
+            return null;
+        this.root = root;
+        TreeNode[] node = search(key);
+        if(node[0] == null)
+            return root;
+        else {
+            if(node[1] == null) {
+                if(isLeaf(node[0]) ) {
+                    return null;
+                }
+                else {
+                    if(hasOnlyLeft(node[0]) ) {
+                        return node[0].left;                        
+                    }
+                    else {
+                        if(hasOnlyRight(node[0]) ) {
+                            return node[0].right;                       
+                        }
+                        else {
+                            TreeNode[] max = findMax(node[0].left);
+                            root = max[0];
+                            if(max[1] != null) {
+                                if(max[1].left == max[0])
+                                    max[1].left = max[0].left;
+                                else
+                                    max[1].right = max[0].left;
+                            }
+                            if(max[0] != node[0].left)
+                                max[0].left = node[0].left;
+                            max[0].right = node[0].right;
+                            return root;  
+                        }
+                    }
+                }
+                
+            }
+            else {
+                if(isLeaf(node[0]) ) {
+                    if(node[1].left == node[0])
+                        node[1].left = null;
+                    else
+                        node[1].right = null;
+                    return root;
+                }
+                else {
+                    if(hasOnlyLeft(node[0]) ) {
+                        if(node[1].left == node[0])
+                            node[1].left = node[0].left;
+                        else
+                            node[1].right = node[0].left;
+                        return root;                        
+                    }
+                    else {
+                        if(hasOnlyRight(node[0]) ) {
+                            if(node[1].left == node[0])
+                                node[1].left = node[0].right;
+                            else
+                                node[1].right = node[0].right;
+                            return root;                        
+                        }
+                        else {
+                            TreeNode[] max = findMax(node[0].left);
+                            if(node[1].left == node[0])
+                                node[1].left = max[0];
+                            else
+                                node[1].right = max[0];
+                            if(max[1] != null) {
+                                if(max[1].left == max[0])
+                                    max[1].left = max[0].left;
+                                else
+                                    max[1].right = max[0].left;
+                            }
+                            if(max[0] != node[0].left)
+                                max[0].left = node[0].left;
+                            max[0].right = node[0].right;
+                            return root;  
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

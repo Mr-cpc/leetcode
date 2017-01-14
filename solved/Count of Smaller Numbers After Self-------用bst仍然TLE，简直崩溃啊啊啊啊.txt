@@ -1,0 +1,88 @@
+public class Solution {
+    // int[] segTree;
+    public List<Integer> countSmaller(int[] nums) {
+        Bst bst = new Bst();
+        return  bst.getAns(nums);
+    }
+}
+
+class TreeNode {
+    int val;
+    int idx;
+    List<Integer> idxs;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int val,int idx) {
+        this.val = val;
+        this.idx = idx;
+        this.idxs = new ArrayList<>();
+        idxs.add(idx);
+    }
+}
+
+class Bst {
+    TreeNode root;
+    int[] nums;
+    Integer[] ans;
+    void insert(TreeNode node) {
+        if(root == null) {
+            root = node;
+        }
+        else {
+            TreeNode[] insPos = findInsPos(node);
+            if(insPos[0] == null) {
+                if(node.val < insPos[1].val)
+                    insPos[1].left = node;
+                else
+                    insPos[1].right = node;
+            }
+            else {
+                insPos[0].idxs.add(node.idx);
+                traverse(insPos[0].right);
+            }
+        }
+    }
+    void traverse(TreeNode root) {
+        Stack<TreeNode> s = new Stack<>();
+        while(root != null || !s.isEmpty()) {
+            while(root != null) {
+                s.push(root);
+                root = root.left;
+            }
+            root = s.pop();
+            for(int i = 0;i<root.idxs.size();i++ )
+                ans[root.idxs.get(i)]++;
+            root = root.right;
+        }
+        // if(root != null) {
+        //     for(int i = 0;i<root.idxs.size();i++ )
+        //         ans[root.idxs.get(i)]++;
+        //     traverse(root.left);
+        //     traverse(root.right);
+        // }
+    }
+    TreeNode[] findInsPos(TreeNode node) {
+        TreeNode[] res = {root,null};//第一个元素代表找到了node,第二个元素代表其父母
+        while(res[0] != null && res[0].val != node.val) {
+            res[1] = res[0];
+            if(node.val < res[0].val) {
+                for(int i = 0;i<res[0].idxs.size();i++ )
+                    ans[res[0].idxs.get(i)]++;
+                traverse(res[0].right);
+                res[0] = res[0].left;
+            }
+            else
+                res[0] = res[0].right;
+        }
+        return res;
+    }
+    public List<Integer> getAns(int[] nums) {
+        ans = new Integer[nums.length];
+        for(int i = 0;i<ans.length;i++)
+            ans[i] = 0;
+        for(int i = 0 ;i<nums.length;i++) {
+            this.insert(new TreeNode(nums[i],i) );
+        }        
+        return Arrays.asList(ans);
+    }
+}

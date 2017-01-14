@@ -1,0 +1,118 @@
+public class Solution {
+    static Set<Character> op;
+    static Map<String,Boolean> level;
+    static  {
+        op = new HashSet<>();
+        level = new HashMap<String,Boolean>();
+        op.add('+');
+        op.add('-');
+        op.add('*');
+        op.add('/');
+        level.put("+-",false);
+        level.put("-+",false);
+        level.put("*/",false);
+        level.put("/*",false);
+        
+        level.put("+*",false);
+        level.put("+/",false);
+        level.put("-*",false);
+        level.put("-/",false);
+        
+        level.put("*+",true);
+        level.put("*-",true);
+        level.put("/+",true);
+        level.put("/-",true);
+        
+        level.put("++",false);
+        level.put("--",false);
+        level.put("**",false);
+        level.put("//",false);
+        
+        // level.put("#+",false);
+        // level.put("#-",false);
+        // level.put("#*",false);
+        // level.put("#/",false);
+        level.put("+#",true);
+        level.put("-#",true);
+        level.put("*#",true);
+        level.put("/#",true);
+    }
+    static Set<String> set;
+    static {
+        set = new HashSet<>();
+        set.add("+");
+        set.add("-");
+        set.add("*");
+        set.add("/");
+    }
+    public int evalRPN(List<String> tokens) {
+        Stack<String> s = new Stack<>();
+        for(String str:tokens) {
+            if(!set.contains(str))
+                s.push(str);
+            else {
+                int a = Integer.parseInt(s.pop()),b = Integer.parseInt(s.pop());
+                switch (str) {
+                    case "+":
+                        s.push(String.valueOf(b+a) );break;
+                    case "-":
+                        s.push(String.valueOf(b-a) );break;
+                    case "*":
+                        s.push(String.valueOf(b*a) );break;
+                    case "/":
+                        s.push(String.valueOf(b/a));
+                }
+                
+            }
+        }
+        return Integer.parseInt(s.pop() );
+    }
+    public int calculate(String s) {
+        char[] str = s.toCharArray();
+        Stack<String> not = new Stack<>();
+        not.push("#");
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ;i<str.length;i++) {
+            if(str[i] == ' ')
+                continue;
+            else {
+                String flag = String.valueOf(str[i]+String.valueOf(not.peek() ));
+                if(op.contains(str[i])) {
+                    if( not.peek().equals("(") || level.get(flag) )
+                        not.push(String.valueOf(str[i]));
+                    else {
+                        while(!not.peek().equals("(")  && !not.peek().equals("#") && !level.get(flag)  ) {
+                            ans.add(not.pop());
+                            flag = String.valueOf(str[i]+String.valueOf(not.peek()));
+                        }
+                        not.push(String.valueOf(str[i]));
+                    }
+                }
+                else {
+                    if(str[i] == '(')
+                        not.push(String.valueOf(str[i]));
+                    else {
+                        if(str[i] == ')') {
+                            while(!not.peek().equals("("))
+                                ans.add(not.pop() );
+                            not.pop();
+                        }
+                        else {
+                            sb.append(str[i]);
+                            while(i != str.length-1 && Character.isDigit(str[i+1]))
+                                sb.append(str[++i]);
+                            ans.add(sb.toString() );
+                            sb.delete(0,sb.length() );
+                        }
+                    }
+                }
+
+            }
+        }
+        while(!not.peek().equals("#"))
+            ans.add(not.pop() );
+        not.pop();
+        return evalRPN(ans);
+    }
+}

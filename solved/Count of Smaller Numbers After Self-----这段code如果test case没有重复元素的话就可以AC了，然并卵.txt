@@ -1,0 +1,66 @@
+public class Solution {
+    // int[] segTree;
+    public List<Integer> countSmaller(int[] nums) {
+        Bst bst = new Bst();
+        return  bst.getAns(nums);
+    }
+}
+
+class TreeNode {
+    int val;
+    int idx;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int val,int idx) {
+        this.val = val;
+        this.idx = idx;
+    }
+}
+
+class Bst {
+    TreeNode root;
+    int[] nums;
+    Integer[] ans;
+    void insert(TreeNode node) {
+        if(root == null) {
+            root = node;
+        }
+        else {
+            TreeNode insPos = findInsPos(node);
+            if(node.val < insPos.val)
+                insPos.left = node;
+            else
+                insPos.right = node;
+        }
+    }
+    void traverse(TreeNode root) {
+        if(root != null) {
+            ans[root.idx]++;
+            traverse(root.left);
+            traverse(root.right);
+        }
+    }
+    TreeNode findInsPos(TreeNode node) {
+        TreeNode tmp = root,par = null;
+        while(tmp != null && tmp.val != node.val) {
+            par = tmp;
+            if(node.val < tmp.val) {
+                ans[tmp.idx]++;
+                traverse(tmp.right);
+                tmp = tmp.left;
+            }
+            else
+                tmp = tmp.right;
+        }
+        return par;
+    }
+    public List<Integer> getAns(int[] nums) {
+        ans = new Integer[nums.length];
+        for(int i = 0;i<ans.length;i++)
+            ans[i] = 0;
+        for(int i = 0 ;i<nums.length;i++) {
+            this.insert(new TreeNode(nums[i],i) );
+        }        
+        return Arrays.asList(ans);
+    }
+}
