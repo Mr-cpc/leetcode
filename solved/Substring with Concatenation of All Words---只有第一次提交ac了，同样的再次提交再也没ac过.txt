@@ -1,0 +1,38 @@
+public class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new LinkedList<>();
+        if(words.length == 0 || s.length() < words[0].length() * words.length)
+            return ans;
+        int word_len = words[0].length();
+        Map<String,Integer> map = new HashMap<>();
+        for(String it: words)
+            if(map.containsKey(it))
+                map.put(it,map.get(it)+1 );
+            else
+                map.put(it,1);
+        char[] ss = s.toCharArray();
+        for(int i = 0;i<=ss.length-word_len*words.length;i++) {
+            ans.add(i);
+            Map<String,Integer> tmp = new HashMap<>(map);
+            for(int j = i;j<ss.length;j+=word_len) {
+                if(j+word_len > s.length() )
+                    break;
+                String str = s.substring(j,j+word_len);
+                if(!tmp.containsKey(str) ) {
+                    ans.remove(new Integer(i) );
+                    break;
+                }
+                else {
+                    int fre = tmp.get(str);
+                    if(fre != 1)
+                        tmp.put(str,--fre);
+                    else
+                        tmp.remove(str);
+                    if(tmp.size() == 0)
+                        break;
+                }
+            }
+        }
+        return ans;
+    }
+}

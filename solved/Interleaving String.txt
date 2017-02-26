@@ -1,0 +1,30 @@
+public class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if(s1.length() + s2.length() != s3.length() )
+            return false;
+        boolean f[][] = new boolean[s1.length()+1][s2.length()+1];
+        f[0][0] = true;
+        for(int i = 1;i<=s1.length();i++ )
+            f[i][0] = f[i-1][0] && s1.charAt(i-1) == s3.charAt(i-1);
+        for(int i = 1;i<=s2.length();i++ )
+            f[0][i] = f[0][i-1] && s2.charAt(i-1) == s3.charAt(i-1);
+        for(int i = 1;i<=s1.length();i++ ) {
+            for(int j = 1;j<=s2.length();j++) {
+                    if(f[i-1][j] && s1.charAt(i-1) == s3.charAt(i+j-1))
+                        f[i][j] = true;
+                    else {
+                        if(f[i][j-1] && s2.charAt(j-1) == s3.charAt(i+j-1))
+                            f[i][j] = true;
+                        else {
+                            StringBuilder a = new StringBuilder().append(s2.charAt(j-1)).append(s1.charAt(i-1));
+                            StringBuilder b = new StringBuilder().append(s3.charAt(i+j-2)).append(s3.charAt(i+j-1));
+                            if(f[i-1][j-1] && (a.toString().equals(b.toString()) || a.reverse().toString().equals(b.toString())) )
+                                f[i][j] = true;
+                        }
+                    }
+                
+            }
+        }
+        return f[s1.length() ][s2.length() ];
+    }
+}

@@ -1,0 +1,44 @@
+import java.math.BigInteger;
+public class Solution {
+    char[] cc;
+    public int myAtoi(String str) {
+        cc = str.trim().toCharArray();
+        if( cc.length == 0 || (!Character.isDigit(cc[0]) && cc[0] != '+' && cc[0] != '-') || cc.length == 1)
+            return 0;
+        int i;
+        String ans = null;
+        switch(cc[0]) {
+            case '+':
+                for(i = 1;i<cc.length;i++)
+                    if(!Character.isDigit(cc[i]))
+                        break;
+                ans = new String(cc,1,i-1);
+                if(ans.equals("") )
+                    return 0;
+                if(new BigInteger(ans).longValue() > (long)Integer.MAX_VALUE )
+                    return Integer.MAX_VALUE ;
+                else
+                    return Integer.parseInt(ans);
+            case '-':
+                for(i = 1;i<cc.length;i++)
+                    if(!Character.isDigit(cc[i]))
+                        break;
+                ans = new String(cc,1,i-1);
+                if(ans.equals("") )
+                    return 0;
+                if(new BigInteger(ans).subtract(BigInteger.valueOf(((long)Integer.MAX_VALUE)+1 ) ).compareTo(BigInteger.ZERO) -1>= -1 )
+                    return Integer.MIN_VALUE ;
+                else
+                    return -Integer.parseInt(ans);
+            default:
+                for(i = 1;i<cc.length;i++)
+                    if(!Character.isDigit(cc[i]))
+                        break;
+                ans = new String(cc,0,i);
+                if(new BigInteger(ans).subtract(BigInteger.valueOf((long)Integer.MAX_VALUE ) ).compareTo(BigInteger.ZERO) -1>= -1  )
+                    return Integer.MAX_VALUE ;
+                else
+                    return Integer.parseInt(ans);
+        }
+    }
+}

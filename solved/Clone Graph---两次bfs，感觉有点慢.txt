@@ -1,0 +1,55 @@
+/**
+ * Definition for undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     List<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    void visit(UndirectedGraphNode node,Map<UndirectedGraphNode,UndirectedGraphNode> map) {
+        for(UndirectedGraphNode it:node.neighbors) {
+            map.get(node).neighbors.add(map.get(it));
+        }
+    }
+    UndirectedGraphNode bfs(UndirectedGraphNode node) {
+        Queue<UndirectedGraphNode> q = new LinkedList<>();
+        if(node != null)
+            q.offer(node);
+        else
+            return node;
+        Map<UndirectedGraphNode,UndirectedGraphNode> map = new HashMap<>();
+        Set<UndirectedGraphNode> s = new HashSet<>();
+        // UndirectedGraphNode ans = new UndirectedGraphNode(node.label);
+        // map.put(node,ans);
+        while(!q.isEmpty()) {
+            UndirectedGraphNode n = q.poll();
+            if(!s.contains(n) ) {
+                UndirectedGraphNode copy = new UndirectedGraphNode(n.label);
+                map.put(n,copy);
+                s.add(n);
+            }
+            for(UndirectedGraphNode it:n.neighbors) {
+                if(!s.contains(it))
+                    q.offer(it);
+            }
+        }
+        q.offer(node);
+        s.clear();
+        while(!q.isEmpty()) {
+            UndirectedGraphNode n = q.poll();
+            if(!s.contains(n) ) {
+                visit(n,map);
+                s.add(n);
+            }
+            for(UndirectedGraphNode it:n.neighbors) {
+                if(!s.contains(it))
+                    q.offer(it);
+            }
+        } 
+        return map.get(node);
+    }
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        return bfs(node);
+    }
+}

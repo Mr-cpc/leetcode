@@ -1,0 +1,78 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    int len(ListNode head) {
+        int len = 0 ;
+        while(head != null) {
+            ++len;
+            head = head.next;
+        }
+        return len;
+    }
+    ListNode[] reverse(ListNode head) {
+        ListNode[] re = {head.next,head} ;
+        while(re[0] != null) {
+            ListNode next = re[0].next;
+            re[0].next = re[1];
+            re[1] = re[0];
+            re[0] = next;
+        }
+        head.next = null;
+        re[0] = head;
+        return re;
+    }
+    List<ListNode> split(ListNode head,int k) {
+        ListNode cur = head,pre = null;
+        List<ListNode> re = new LinkedList<>();
+        if(head.next == null) {
+            re.add(cur);
+            return re;
+        }
+        while(cur != null) {
+            re.add(cur);
+            for(int i = 0;i<k;i++) {
+                pre = cur;
+                if(cur != null)
+                    cur = cur.next;
+                else
+                    break;
+            }
+            if(pre != null)
+                pre.next = null;
+        }
+        return re;
+    }
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head == null || head.next == null)
+            return head;
+        List<ListNode> l = split(head,k);
+        if(l.size() == 1) {
+            if(len(head) < k)
+                return l.get(0);
+            else
+                return reverse(l.get(0) )[1];
+        }
+        else {
+            ListNode[] pre = reverse(l.get(0) ),cur = null;
+            ListNode ans = pre[1];
+            for(int i = 1;i<l.size()-1;i++ ) {
+                cur = reverse(l.get(i) );
+                pre[0].next = cur[1];
+                pre = cur;
+            }
+            if(len(l.get(l.size()-1 ) ) < k) {
+                pre[0].next = l.get(l.size()-1 );
+            }
+            else {
+                pre[0].next = reverse(l.get(l.size()-1 ))[1];
+            }
+            return ans;
+        }
+    }
+}

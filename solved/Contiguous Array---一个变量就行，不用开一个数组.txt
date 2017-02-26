@@ -1,0 +1,25 @@
+public class Solution {
+    public int findMaxLength(int[] nums) {
+        // int[] prefixSum = new int[nums.length+1];
+        int ans = 0,prefixSum = 0;
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i = 0;i<nums.length;i++) {
+            prefixSum += (nums[i] == 0?-1:1);    
+            if(prefixSum == 0) 
+                ans = i+1;
+            else {
+                if(!map.containsKey(prefixSum) )
+                    map.put(prefixSum,i);
+                else 
+                    ans = Math.max(ans,i-map.get(prefixSum) );
+            }
+        }
+        // for(int i = 0;i<prefixSum.length-1;i++) {
+        //     for(int j = i+2;j<prefixSum.length;j++) {
+        //         if(prefixSum[j] - prefixSum[i] == 0)
+        //             ans = Math.max(ans,j-i);
+        //     }
+        // }
+        return ans;
+    }
+}

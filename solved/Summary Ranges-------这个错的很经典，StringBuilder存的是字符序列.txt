@@ -1,0 +1,31 @@
+public class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> ans = new LinkedList<>();
+        if(nums.length == 0)
+            return ans;
+        if(nums.length == 1) {
+            ans.add(String.valueOf(nums[0]) );
+            return ans;
+        }
+        StringBuilder sb = new StringBuilder().append(nums[0]);
+        for(int i = 1;i<nums.length;i++) {
+            if(nums[i] == ++nums[i-1]) {
+                sb.append("->").append(nums[i]);
+            }
+            else {
+                ans.add(sb.toString() );
+                sb.replace(0,sb.length(),String.valueOf(nums[i]) );
+            }
+        }
+        ans.add(sb.toString());
+        for(int i = 0;i<ans.size();i++) {
+            String s = ans.get(i);
+            if(s.length() == 1 )
+                continue;
+            if(s.split("->").length > 2) {
+                ans.set(i,new StringBuilder(s).delete(1,s.length()-3).toString());
+            }
+        }
+        return ans;
+    }
+}

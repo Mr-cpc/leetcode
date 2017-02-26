@@ -1,0 +1,45 @@
+import java.util.Collection;
+public class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] deg = new int[numCourses];
+        for(int i = 0;i<prerequisites.length;i++)
+            deg[prerequisites[i][0]]++;
+        Set<Integer> noPre = null;
+        Set<Integer> cur = new HashSet<>();
+        List<Integer> ans = new LinkedList<>();
+        while(true) {
+            if(cur.size() == numCourses)
+                return toPrimitive(ans);
+            noPre = findNoInputVer(cur,deg);
+            if(noPre.size() == 0)
+                return new int[0];
+            Iterator<Integer> it = noPre.iterator();
+            while(it.hasNext() ) {
+                Integer a = it.next();
+                cur.add(a);
+                ans.add(a);
+                for(int i = 0;i<prerequisites.length;i++) 
+                    if(prerequisites[i][1] == a) {
+                        --deg[prerequisites[i][0]];
+                        prerequisites[i][1] = -1;
+                    }
+            }
+        }        
+    }
+    int[] toPrimitive(Collection<Integer> c) {
+        int[] ans = new int[c.size() ];
+        Iterator<Integer> it = c.iterator();
+        int i = 0;
+        while(it.hasNext() ) {
+            ans[i++] = it.next();
+        }
+        return ans;
+    }
+    Set<Integer> findNoInputVer(Set<Integer> c,int[] deg) {
+        Set<Integer> noPre = new HashSet<>();
+        for(int i = 0;i<deg.length;i++)
+            if(deg[i] == 0 && !c.contains(i) )
+                noPre.add(i); 
+        return noPre;
+    }
+}
