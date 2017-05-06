@@ -1,0 +1,25 @@
+public class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        char[] ss1 = s1.toCharArray(),ss2 = s2.toCharArray();
+        Map<Character,Integer> map = new HashMap<>();
+        for(char c:s1.toCharArray() )
+            map.put(c,map.getOrDefault(c,0)+1 );
+        for(int i = 0;i<=ss2.length-ss1.length;i++) {
+            Map<Character,Integer> itr = new HashMap<>(map);
+            for(int j = 0;j<ss1.length;j++) {
+                if(!itr.containsKey(ss2[i+j]))
+                    break;
+                else {
+                    int num = itr.get(ss2[i+j]);
+                    if(num == 1)
+                        itr.remove(ss2[i+j]);
+                    else
+                        itr.put(ss2[i+j],num- 1);
+                }
+            }
+            if(itr.isEmpty())
+                return true;
+        }
+        return false;
+    }
+}

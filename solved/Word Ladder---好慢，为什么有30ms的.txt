@@ -1,0 +1,51 @@
+public class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Queue<Status> q = new LinkedList<>();
+        Set<String> set = new HashSet<>();
+        q.offer(new Status(beginWord,1));
+        set.add(beginWord);
+        while(!q.isEmpty() ) {
+            Status cur = q.poll();
+            if(cur.val.equals(endWord) )
+                return cur.level;
+            List<Status> nextStatus = getNextStatus(cur,wordList);
+            for(Status next:nextStatus) {
+                if(set.contains(next.val) )
+                    continue;
+                else {
+                    if(next.val.equals(endWord))
+                        return next.level;
+                    q.offer(next);
+                    wordList.remove(next.val);
+                    set.add(next.val);
+                }
+            }
+        }
+        return 0;
+    }
+    List<Status> getNextStatus(Status s,List<String> lists){
+        char[] ss = s.val.toCharArray();
+        List<Status> res = new LinkedList<>();
+        for(String cur:lists) {
+            int dif = 0;
+            for(int i = 0;i<ss.length;i++) {
+                if(ss[i] != cur.charAt(i) ) {
+                    dif++;
+                    if(dif > 1)
+                        break;
+                }
+            }
+            if(dif == 1)
+                res.add(new Status(cur,s.level+1));
+        }
+        return res;
+    }
+}
+class Status {
+    String val;
+    int level;
+    Status(String val,int lev){
+        this.val = val;
+        this.level = lev;
+    }
+}
