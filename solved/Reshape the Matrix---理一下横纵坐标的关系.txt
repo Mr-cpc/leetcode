@@ -1,0 +1,16 @@
+public class Solution {
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        if(nums.length == 0 || nums.length * nums[0].length != r * c)
+            return nums;
+        else {
+            int ans[][] = new int[r][c];
+            for(int i = 0;i<r;i++) {
+                for(int j = 0;j<c;j++) {
+                    int idx = i*ans[0].length + j,x = idx / nums[0].length,y = idx % nums[0].length;
+                    ans[i][j] = nums[x][y];
+                }
+            }
+            return ans;
+        }
+    }
+}
