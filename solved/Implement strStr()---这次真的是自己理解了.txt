@@ -1,0 +1,40 @@
+public class Solution {
+    char[] t,p;
+    int[] next;
+    private int[] next(char[] p) {
+        next = new int[p.length];
+        next[0] = -1;
+        if(next.length == 1)
+            return next;
+        next[1] = 0;
+        for(int i = 2;i<p.length;i++) {
+            int k = next[i-1];
+            while(k != -1 && p[i-1] != p[k]) {
+                k = next[k];
+            }
+            next[i] = k + 1;
+        }
+        return next;
+    }
+    public int strStr(String haystack, String needle) {
+        if(haystack.length() < needle.length() )
+            return -1;
+        if(haystack.equals("") || needle.equals("") )
+            return 0;            
+        t = haystack.toCharArray();
+        p = needle.toCharArray();
+        int i = 0, j = 0;
+        next = next(p);
+        while(i < t.length) {
+            if(j == -1 || t[i] == p[j]) {
+                i++;
+                j++;
+                if(j == p.length)
+                    return i - j;
+            }
+            else
+                j = next[j];
+        }
+        return -1;
+    }
+}
