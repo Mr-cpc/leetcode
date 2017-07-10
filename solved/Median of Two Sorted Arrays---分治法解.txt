@@ -1,0 +1,50 @@
+public class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+		int len = nums1.length+ nums2.length;
+		if((len & 0x1) == 1){
+			return topK(nums1, nums2, (len>>1)+1);
+		}
+		else
+			return (topK(nums1, nums2, (len >> 1)) + topK(nums1, nums2, (len >> 1)+1))/2;        
+    }
+	public static double topK(int[] nums1,int[] nums2,int k) {
+		if(nums1.length <= nums2.length)
+			return topK(nums1, nums2, 0, 0, k);
+		else
+			return topK(nums2,nums1,0,0,k);
+	}
+	private static double topK(int[] sh,int[] lon,int shStart,int lonStart,int k) {
+		if(sh.length == shStart) {
+			return lon[lonStart+k-1];
+		}
+		if(k == 1)
+			return lon[lonStart] < sh[shStart]?lon[lonStart]:sh[shStart];
+		else {
+			if(shStart+(k>>1)-1 >= sh.length) {
+				int shk = sh[sh.length-1],lonk = lon[lonStart+(k>>1)-1];
+				if(shk <= lonk) {
+					return topK(sh, lon, sh.length, lonStart, k-(sh.length-shStart));
+				}
+				else {
+					if(lon.length-lonStart-(k>>1) > sh.length - shStart)
+						return topK(sh, lon, shStart, lonStart+(k>>1), k - (k>>1));
+					else
+						return topK(lon, sh, lonStart+(k>>1), shStart, k - (k>>1));
+				}	
+			}
+			else {
+				int shk = sh[shStart+(k>>1)-1],lonk = lon[lonStart+(k>>1)-1];
+				if(shk <= lonk) {
+					return topK(sh, lon, shStart+(k>>1), lonStart, k-(k>>1));
+				}
+				else {
+					if(lon.length-lonStart-(k>>1) > sh.length - shStart)
+						return topK(sh, lon, shStart, lonStart+(k>>1), k - (k>>1));
+					else
+						return topK(lon, sh, lonStart+(k>>1), shStart, k - (k>>1));
+				}				
+			}
+
+		}
+	}    
+}
