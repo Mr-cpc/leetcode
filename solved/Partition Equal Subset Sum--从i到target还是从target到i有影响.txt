@@ -1,0 +1,20 @@
+public class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+        for(int i: nums)
+            sum += i;
+        if((sum & 0x1) == 1)
+            return false;
+        else {
+            boolean dp[] = new boolean[(sum >> 1) + 1];
+            dp[0] = true;
+            for(int j:nums) {
+                for(int i = dp.length-1;i>=j;i--) {
+                    dp[i] = dp[i] || dp[i-j];
+                }
+            }            
+            return dp[dp.length -1];
+        }
+         
+    }
+}
