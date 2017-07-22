@@ -1,0 +1,38 @@
+public class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+		double min = Integer.MAX_VALUE,max = Integer.MIN_VALUE;
+		for(int i:nums) {
+			min = Math.min(min, i);
+			max = Math.max(max, i);
+		}
+		double mid;
+		do {
+            mid = (min + max) * 0.5;
+			if(exist(nums, k, mid))
+				min = mid;
+			else
+				max =  mid;
+		} while (Math.abs(max-min) > 0.00001);
+		return mid;        
+    }
+	public static boolean exist(int[] nums,int k,double ave) {
+		double sum = 0.0;
+		int i;
+		for(i = 0;i<k;i++)
+			sum += nums[i] - ave;
+		if(sum>0)
+			return true;
+		else {
+			double preK=0,min = Integer.MAX_VALUE;
+			while(i<nums.length) {
+				sum += nums[i]-ave;
+				preK += nums[i-k] -ave;
+				min = Math.min(preK, min);
+                ++i;
+				if(sum >= min || sum > 0)
+					return true;
+			}
+		}
+		return false;
+	}    
+}
