@@ -1,0 +1,20 @@
+public class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int ans[] = new int[2];
+        Set<Integer> s = new HashSet<>(nums.length);
+        int xor1 = 0,xor2 = 0;
+        for(int i = 1;i<=nums.length;i++) {
+            s.add(i);
+            xor1 ^= i;
+        }
+            
+        for(int i:nums) {
+            s.remove(i);
+            xor2 ^= i;
+        }
+          
+        ans[1] = s.iterator().next();
+        ans[0] = xor1 ^ xor2 ^ ans[1]; 
+        return ans;
+    }
+}
