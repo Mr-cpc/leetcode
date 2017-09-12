@@ -1,0 +1,59 @@
+class Solution {
+    public int coinChange(int[] coins, int amount) {  
+    //[1,2,5] 100 这个case就开始过不了了，自己机器上测了下，真的是慢，根本跑不出来
+        CoinChangeStatus status = coinChangeBfs(amount,coins);
+        return status == null?-1:status.getStep();        
+    }
+    public static CoinChangeStatus coinChangeBfs(int amount,int[] coins){
+        Status initialStatus = new CoinChangeStatus(coins, amount,0);
+        Queue<Status> queue = new LinkedList<Status>();
+        queue.offer(initialStatus);
+        while(!queue.isEmpty()) {
+            Status curStatus = queue.poll();
+            if (curStatus.isTargetStatus()) 
+                return (CoinChangeStatus)curStatus;
+            Set<? extends Status> nextStatuses = curStatus.transfer();
+            for(Status nextStatus:nextStatuses) 
+                queue.add(nextStatus);
+        }
+        return null;
+    }    
+}
+
+interface Status {
+
+    public Set<? extends Status> transfer();
+    
+    public boolean isTargetStatus();
+}
+class CoinChangeStatus implements Status {
+
+
+    int[] coins;
+    int amount;
+    int step;
+    public CoinChangeStatus(int[] coins, int amount,int step) {
+        this.coins = coins;
+        this.amount = amount;
+        this.step = step;
+    }
+    @Override
+    public Set<? extends Status> transfer() {
+        Set<Status> res = new HashSet<Status>();
+        for(int coin:this.coins) {
+            if(this.amount >= coin) {
+                Status nextStatus = new CoinChangeStatus(coins,amount-coin,this.step+1);
+                res.add(nextStatus);
+            }
+        }
+        return res;
+    }
+    @Override
+    public boolean isTargetStatus() {
+        return this.amount == 0;
+    }
+    public int getStep() {
+        return step;
+    }
+
+}
