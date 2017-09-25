@@ -1,0 +1,81 @@
+class Solution {
+    public boolean checkValidString(String s) {
+        Stack<Character> stack = new Stack<>();
+        List<Character> star = new LinkedList<>();
+        //整个循环的核心思想是，碰到'*'全部保留到栈里,首先尽量用已经存在的')'来消掉'(' (这一步不用'*'来消),
+        //消不掉的再重新用stack匹配一次(这时候才用'*')
+        for(char c:s.toCharArray()) {
+            if(c == '(') 
+            //左括号，直接进去
+                stack.push(c);
+            else {
+            	//右括号,分情况讨论,能消尽量消
+                if(c == ')') {
+                    if(stack.isEmpty() ) 
+                        return false;
+                    else {
+                    //情况1,当前是')',栈顶为'(',直接消掉
+                        if(stack.peek() =='(')
+                            stack.pop();
+                        else {
+                        //情况2,,当前栈顶不是'(',那么一定是'*',那么就弹出直到栈顶为'(',并且弹出的'*'要记录下来,后面要再进去
+                            while(!stack.isEmpty() && stack.peek() == '*' ) {
+                                star.add(stack.pop());
+                            }
+                            //到了第一个不是'*'的栈顶,也就是'('为栈顶,消掉
+                            if(!stack.isEmpty()) {
+                            	//栈顶的'('出来
+                                stack.pop();
+                                //刚刚弹出来的'*'压回去
+                                for(Character ch:star)
+                                    stack.push(ch);
+                                star.clear();
+                            }
+                            //栈已经弹空了还没有'(',把刚才弹出的'*'拿出一个用来消掉')',剩下的压回去
+                            else {
+                                for(int i = 0;i<star.size()-1;i++)
+                                    stack.push(star.get(i) );
+                                star.clear();
+                            }
+                                
+                        }
+                    }                    
+                }
+                //*号,直接进去
+                else {
+                    stack.push(c);
+                }
+            }
+        }
+        //栈空,肯定是匹配的
+        if(stack.isEmpty())
+            return true;
+        else {
+        	//有一点很重要要意识到的就是，栈中剩下的字符只可能是'('、'*'这两种,因此这种的匹配就和常规的'()'匹配是一样的了
+        	//栈不空,这时候要用另一个栈来对剩下的字符再匹配一次
+        	//匹配的思想是,遇到'*',直接进去;如果当前为'(',栈为空,肯定不匹配,否则栈顶弹出,然后继续下一个字符
+            Stack<Character> other = new Stack<>();
+            while(!stack.isEmpty() ) {
+                char c = stack.pop();
+                if(c == '*')
+                    other.push(c);
+                else {
+                    if(other.isEmpty())
+                        return false;
+                    else
+                        other.pop();
+                }
+            }
+            //为空,肯定ok的
+            if(other.isEmpty())
+                return true;
+            else {
+           		//不为空,当且仅当剩下的字符全是'*',才是匹配的
+                while(!other.isEmpty())
+                    if(other.pop() != '*')
+                        return false;
+                return true;
+            }
+        }
+    }
+}
