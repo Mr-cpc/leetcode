@@ -1,0 +1,30 @@
+class Solution {
+    public int[] constructArray(int n, int k) {
+        List<Integer> res = new ArrayList<>(n);
+        int i = 1,j = n,count = 0,flag = 0;
+        //规定奇数加小的，偶数加大的
+        while(count++ < k) {
+            if(isOdd(flag++))
+                res.add(i++);
+            else
+                res.add(j--);
+        }
+        //如果刚才加的是j，也就是大的
+        int rem = n-k;
+        if(isOdd(flag)) {
+            while(rem-- > 0)
+                res.add(j--);
+        }
+        else {
+            while(rem-- > 0)
+                res.add(i++);
+        }
+        int[] ans = new int[n];
+        for(i = 0;i<n;i++)
+            ans[i] = res.get(i);
+        return ans;       
+    }
+    private static boolean isOdd(int num) {
+        return (num & 0x1) == 1;
+    }  
+}
