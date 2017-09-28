@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<>();
+        if(root == null)
+            return false;
+        List<Integer> list = new LinkedList<>();
+
+        while(root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            list.add(root.val);
+            root = root.right;
+        }
+
+        return ts(list.toArray(new Integer[list.size()]), k);        
+    }
+    private static boolean ts(Integer[] arr,int k) {
+        int i = 0,j = arr.length -1,sum = 0;
+        while(i < j) {
+            sum = arr[i] + arr[j];
+            if(sum == k)
+                return  true;
+            else {
+                if(sum < k)
+                    i++;
+                else
+                    j--;
+            }
+        }
+        return false;
+    }    
+}
