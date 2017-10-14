@@ -1,0 +1,33 @@
+/*
+// Employee info
+class Employee {
+    // It's the unique id of each node;
+    // unique id of this employee
+    public int id;
+    // the importance value of this employee
+    public int importance;
+    // the id of direct subordinates
+    public List<Integer> subordinates;
+};
+*/
+class Solution {
+    public int getImportance(List<Employee> employees, int id) {
+        int ans = 0;
+        Employee tar = null;
+        for(Employee e:employees) {
+            if(e.id == id) {
+                ans += e.importance;
+                tar = e;
+                break;
+            }
+        }
+        if(tar.subordinates.size() == 0)
+            return ans;
+        else  {
+            int subAns = 0;
+            for(Integer subId:tar.subordinates)
+                subAns += getImportance(employees,subId);
+            return subAns+ans;
+        }
+    }
+}
