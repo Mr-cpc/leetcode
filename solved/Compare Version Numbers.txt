@@ -1,0 +1,30 @@
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        String[] v1 = version1.split("\\."),v2 = version2.split("\\.");
+        if(v1.length <= v2.length)
+            return comp(v1,v2);
+        else
+            return -comp(v2,v1);
+    }
+    public int comp(String[] v1, String[] v2) {
+        int ans = 0,i;
+        for(i = 0;i<v1.length;i++) {
+            ans = Integer.parseInt(v1[i]) - Integer.parseInt(v2[i]);
+            ans = (ans == 0)? 0:ans < 0?-1:1;
+            if(ans == 0)
+                continue;
+            else
+                return ans;
+        }
+        if(v2.length == v1.length)
+            return 0;
+        else {
+            while(i < v2.length) {
+                if(Integer.parseInt(v2[i]) > 0)
+                    return -1;
+                ++i;
+            }
+            return 0;
+        }        
+    }
+}
