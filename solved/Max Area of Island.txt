@@ -1,0 +1,66 @@
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int ans = 0,curMax = 0;
+        Set<Point> set = new HashSet<>();
+        Queue<Point> q = new LinkedList<>();
+        for(int i = 0;i<grid.length;i++) {
+            for(int j = 0;j<grid[0].length;j++) {
+                if(grid[i][j] == 0)
+                    continue;
+                Point p = new Point(i,j);
+                if(!set.contains(p)) {
+                    q.offer(p);
+                    curMax = 0;
+                    while(!q.isEmpty()) {
+                        Point cur = q.poll();
+                        if(set.contains(cur))
+                            continue;
+                        curMax++;
+                        set.add(cur);
+                        int[] xx = {cur.x -1,cur.x + 1},yy = {cur.y-1,cur.y+1};
+                        for(int x:xx) {
+                            if(x >= 0 && x < grid.length && grid[x][cur.y] == 1) {
+                                Point next = new Point(x,cur.y);
+                                if(!set.contains(next))
+                                    q.offer(next);
+                            }
+                        }
+                        for(int y:yy) {
+                            if(y >= 0 && y < grid[0].length && grid[cur.x][y] == 1) {
+                                Point next = new Point(cur.x,y);
+                                if(!set.contains(next))
+                                    q.offer(next);
+                            }
+                        }
+                    }
+                    ans = Math.max(ans,curMax);
+                }
+
+            }
+        }
+        return ans;        
+    }
+}
+class Point {
+    int x,y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) 
+            return false;
+        Point point = (Point) o;
+
+        return x == point.x &&y == point.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return 10 * x +y;
+    }
+
+}
