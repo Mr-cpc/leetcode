@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return reConstruct(nums,0,nums.length -1);
+    }
+    public static TreeNode reConstruct(int[] nums,int start,int end) {
+        if(start == end)
+            return new TreeNode(nums[start]);
+        if(start > end)
+            return null;
+        int idx = findMax(nums,start,end);
+        TreeNode t = new TreeNode(nums[idx]);
+        t.left = reConstruct(nums,start,idx-1);
+        t.right = reConstruct(nums,idx +1,end);
+        return t;
+    }
+    private static int findMax(int[] nums,int start,int end) {
+        int idx = start,max = Integer.MIN_VALUE;
+        for (int i = start; i <= end; i++) {
+            if (nums[i] > max) {
+                max = nums[i];
+                idx = i;
+            }
+        }
+        return idx;
+    }    
+}
